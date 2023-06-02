@@ -4,6 +4,9 @@ class_name Player
 #@export var BulletScene: PackedScene
 @export var move_speed := 150.0
 
+@onready var sprite := %Sprite as Sprite2D
+@onready var animation_timer := %AnimationTimer as Timer
+
 #@onready var muzzle := $Muzzle as Marker2D
 #@onready var muzzle_flash := $Muzzle/MuzzleFlash as Sprite2D
 
@@ -24,6 +27,7 @@ func _ready() -> void:
 func _physics_process(_delta: float) -> void:
 	control()
 	sprite_flip()
+	sprite_animation()
 	move_and_slide()
 	pass
 
@@ -39,11 +43,22 @@ func control() -> void:
 			move_toward(velocity.y, 0, move_speed))
 	pass
 
-func sprite_flip() -> void:
-	if velocity.x > 0:
-		$Sprite.flip_h = true
-	elif velocity.x < 0:
-		$Sprite.flip_h = false
+
+func sprite_flip(deviation_factor = 0) -> void:
+	if velocity.x > deviation_factor:
+		sprite.flip_h = true
+	elif velocity.x < deviation_factor:
+		sprite.flip_h = false
+	pass
+
+
+func sprite_animation() -> void:
+	if velocity != Vector2.ZERO and animation_timer.is_stopped():
+		if sprite.frame >= sprite.hframes - 1:
+			sprite.frame = 0
+		else:
+			sprite.frame += 1
+		animation_timer.start()
 	pass
 
 

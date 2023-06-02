@@ -12,6 +12,7 @@ motion_mode = 1
 script = ExtResource("1_m5661")
 
 [node name="Sprite" type="Sprite2D" parent="."]
+unique_name_in_owner = true
 texture = ExtResource("1_ftv13")
 hframes = 2
 
@@ -20,3 +21,8 @@ hframes = 2
 [node name="Shape" type="CollisionShape2D" parent="."]
 position = Vector2(2, 4)
 shape = SubResource("CapsuleShape2D_vdo4k")
+
+[node name="AnimationTimer" type="Timer" parent="."]
+unique_name_in_owner = true
+wait_time = 0.2
+one_shot = true
