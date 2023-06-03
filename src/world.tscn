@@ -1,9 +1,27 @@
-[gd_scene load_steps=5 format=3 uid="uid://s1c8nnrux7l0"]
+[gd_scene load_steps=9 format=3 uid="uid://s1c8nnrux7l0"]
 
 [ext_resource type="Texture2D" uid="uid://ddx6geoo4gb1w" path="res://Textures/dirt_full_new.png" id="1_kym3m"]
 [ext_resource type="PackedScene" uid="uid://blbt8mhmyu5sj" path="res://src/actors/player/player.tscn" id="2_6shik"]
 [ext_resource type="PackedScene" uid="uid://p8cgk5qi7upk" path="res://src/actors/enemy/enemy.tscn" id="3_kefvf"]
 [ext_resource type="PackedScene" uid="uid://djqjkwhkvm8et" path="res://src/components/camera/camera.tscn" id="4_bh6hc"]
+[ext_resource type="PackedScene" uid="uid://c0e81j5amveq" path="res://src/components/enemy_spawner/enemy_spawner.tscn" id="4_ipuir"]
+[ext_resource type="Script" path="res://src/components/enemy_spawner/spawn_info.gd" id="6_bofcq"]
+
+[sub_resource type="Resource" id="Resource_ut21o"]
+script = ExtResource("6_bofcq")
+time_start = 0
+time_end = 5
+enemy = ExtResource("3_kefvf")
+enemy_num = 1
+enemy_spawn_delay = 0
+
+[sub_resource type="Resource" id="Resource_mqhoo"]
+script = ExtResource("6_bofcq")
+time_start = 5
+time_end = 60
+enemy = ExtResource("3_kefvf")
+enemy_num = 10
+enemy_spawn_delay = 0
 
 [node name="World" type="Node2D"]
 metadata/_edit_lock_ = true
@@ -19,7 +37,7 @@ metadata/_edit_lock_ = true
 [node name="Player" parent="." instance=ExtResource("2_6shik")]
 position = Vector2(312, 228)
 
-[node name="Enemy" parent="." instance=ExtResource("3_kefvf")]
-position = Vector2(771, 365)
-
 [node name="Camera" parent="." instance=ExtResource("4_bh6hc")]
+
+[node name="EnemySpawner" parent="." instance=ExtResource("4_ipuir")]
+spawns = Array[ExtResource("6_bofcq")]([SubResource("Resource_ut21o"), SubResource("Resource_mqhoo")])
