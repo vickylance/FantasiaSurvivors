@@ -6,6 +6,8 @@ class_name Player
 
 @onready var sprite := %Sprite as Sprite2D
 @onready var animation_timer := %AnimationTimer as Timer
+@onready var health := %Health as Health
+@onready var hurt_box := %HurtBox as HurtBox
 
 #@onready var muzzle := $Muzzle as Marker2D
 #@onready var muzzle_flash := $Muzzle/MuzzleFlash as Sprite2D
@@ -14,6 +16,9 @@ var bullets: Node
 
 
 func _ready() -> void:
+	assert(hurt_box.hurt.connect(_on_hurt_box_hurt) == OK)
+	assert(health.dead.connect(_on_health_dead) == OK)
+	
 	if not is_instance_valid(get_tree().root.find_child("Bullets", true, false) as Node):
 		var newNode = Node.new()
 		newNode.name = "Bullets"
@@ -60,6 +65,18 @@ func sprite_animation() -> void:
 			sprite.frame += 1
 		animation_timer.start()
 	pass
+
+
+func _on_hurt_box_hurt(damage: float) -> void:
+	health.take_damage(damage)
+	print(health.current_hp)
+	pass
+
+
+func _on_health_dead() -> void:
+	queue_free()
+	pass
+
 
 
 #func _unhandled_input(event: InputEvent) -> void:

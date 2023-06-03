@@ -1,0 +1,14 @@
+[gd_scene load_steps=2 format=3 uid="uid://dkdrt10nft844"]
+
+[ext_resource type="Script" path="res://src/components/hit_box/hit_box.gd" id="1_teq1s"]
+
+[node name="HitBox" type="Area2D" groups=["attack"]]
+collision_layer = 0
+collision_mask = 0
+script = ExtResource("1_teq1s")
+
+[node name="Shape" type="CollisionShape2D" parent="."]
+
+[node name="DisableTimer" type="Timer" parent="."]
+wait_time = 0.5
+one_shot = true

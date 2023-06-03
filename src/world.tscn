@@ -1,8 +1,9 @@
-[gd_scene load_steps=4 format=3 uid="uid://s1c8nnrux7l0"]
+[gd_scene load_steps=5 format=3 uid="uid://s1c8nnrux7l0"]
 
 [ext_resource type="Texture2D" uid="uid://ddx6geoo4gb1w" path="res://Textures/dirt_full_new.png" id="1_kym3m"]
 [ext_resource type="PackedScene" uid="uid://blbt8mhmyu5sj" path="res://src/actors/player/player.tscn" id="2_6shik"]
 [ext_resource type="PackedScene" uid="uid://p8cgk5qi7upk" path="res://src/actors/enemy/enemy.tscn" id="3_kefvf"]
+[ext_resource type="PackedScene" uid="uid://djqjkwhkvm8et" path="res://src/components/camera/camera.tscn" id="4_bh6hc"]
 
 [node name="World" type="Node2D"]
 metadata/_edit_lock_ = true
@@ -20,3 +21,5 @@ position = Vector2(312, 228)
 
 [node name="Enemy" parent="." instance=ExtResource("3_kefvf")]
 position = Vector2(771, 365)
+
+[node name="Camera" parent="." instance=ExtResource("4_bh6hc")]
