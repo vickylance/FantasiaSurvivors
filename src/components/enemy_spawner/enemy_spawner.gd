@@ -24,7 +24,7 @@ func _on_timer_timeout() -> void:
 				i.spawn_delay_counter += 1
 			else:
 				i.spawn_delay_counter = 0
-				var new_enemy = load(str(i.enemy.resource_path))
+				var new_enemy = i.enemy
 				var counter = 0
 				while counter < i.enemy_num:
 					var enemy_spawn = new_enemy.instantiate()
@@ -60,6 +60,5 @@ func get_random_position() -> Vector2:
 	var x_spawn = randf_range(spawn_pos1.x, spawn_pos2.x)
 	var y_spawn = randf_range(spawn_pos1.y, spawn_pos2.y)
 	return Vector2(x_spawn, y_spawn)
-	pass
 
 

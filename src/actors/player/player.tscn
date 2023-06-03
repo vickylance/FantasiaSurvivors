@@ -1,4 +1,4 @@
-[gd_scene load_steps=7 format=3 uid="uid://blbt8mhmyu5sj"]
+[gd_scene load_steps=8 format=3 uid="uid://blbt8mhmyu5sj"]
 
 [ext_resource type="Texture2D" uid="uid://de3746bnxlpmc" path="res://Textures/Player/player_sprite.png" id="1_ftv13"]
 [ext_resource type="Script" path="res://src/actors/player/player.gd" id="1_m5661"]
@@ -12,9 +12,13 @@ height = 22.0
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_38k83"]
 size = Vector2(12, 21)
 
+[sub_resource type="CircleShape2D" id="CircleShape2D_cfn72"]
+radius = 380.0
+
 [node name="Player" type="CharacterBody2D" groups=["player"]]
 motion_mode = 1
 script = ExtResource("1_m5661")
+move_speed = 100.0
 
 [node name="Sprite" type="Sprite2D" parent="."]
 unique_name_in_owner = true
@@ -41,5 +45,25 @@ collision_mask = 2
 [node name="Shape" parent="HurtBox" index="0"]
 position = Vector2(2, 2.5)
 shape = SubResource("RectangleShape2D_38k83")
+
+[node name="Attack" type="Node2D" parent="."]
+
+[node name="IceSpearTimer" type="Timer" parent="Attack"]
+unique_name_in_owner = true
+wait_time = 1.5
+
+[node name="IceSpearAttackTimer" type="Timer" parent="Attack/IceSpearTimer"]
+unique_name_in_owner = true
+wait_time = 0.075
+
+[node name="EnemyDetectionArea" type="Area2D" parent="."]
+unique_name_in_owner = true
+collision_layer = 0
+collision_mask = 4
+monitorable = false
+
+[node name="Shape" type="CollisionShape2D" parent="EnemyDetectionArea"]
+shape = SubResource("CircleShape2D_cfn72")
+debug_color = Color(0, 0.6, 0.701961, 0.129412)
 
 [editable path="HurtBox"]

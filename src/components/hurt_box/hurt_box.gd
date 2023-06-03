@@ -11,7 +11,9 @@ enum HurtBoxType {
 @onready var collision := $Shape as CollisionShape2D
 @onready var disable_timer := $DisableTimer as Timer
 
-signal hurt(damage: float)
+signal hurt(damage: float, angle: Vector2, knock_back: float)
+
+var hit_once_arrray  = []
 
 
 func _ready() -> void:
@@ -20,6 +22,7 @@ func _ready() -> void:
 
 
 func _on_area_entered(area: Area2D) -> void:
+	print("enemy hurt Area entered")
 	if area.is_in_group("attack"):
 		if area.get("damage") != null:
 			match hurt_box_type:
@@ -27,13 +30,30 @@ func _on_area_entered(area: Area2D) -> void:
 					collision.call_deferred("set", "disabled", true)
 					disable_timer.start()
 				HurtBoxType.HitOnce:
-					pass
+					if hit_once_arrray.has(area) == false:
+						hit_once_arrray.append(area)
+						if area.has_signal("remove_from_array"):
+							if not area.remove_from_array.is_connected(remove_from_list):
+								area.remove_from_array.connect(remove_from_list)
+					else:
+						return
 				HurtBoxType.DisableHitBox:
 					if area.has_method("temp_disable"):
 						area.temp_disable()
 			var damage: float = area.damage
-			print("DAMAGE", damage)
-			hurt.emit(damage)
+			var angle := Vector2.ZERO
+			var knock_back := 1
+			if area.get("angle") != null:
+				angle = area.angle
+			if area.get("knock_back") != null:
+				knock_back = area.knock_back
+			hurt.emit(damage, angle, knock_back)
+	pass
+
+
+func remove_from_list(object) -> void:
+	if hit_once_arrray.has(object):
+		hit_once_arrray.erase(object)
 	pass
 
 

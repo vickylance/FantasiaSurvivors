@@ -9,6 +9,24 @@ class_name Player
 @onready var health := %Health as Health
 @onready var hurt_box := %HurtBox as HurtBox
 
+# Attacks
+var ice_spear = preload("res://src/components/attack/ice_spear/ice_spear.tscn")
+
+# Attack nodes
+@onready var ice_spear_timer := %IceSpearTimer as Timer
+@onready var ice_spear_attack_timer := %IceSpearAttackTimer as Timer
+
+# IceSpear
+var ice_spear_ammo: int = 0
+var ice_spear_base_ammo: int = 1
+var ice_spear_attack_speed: float = 1.5
+var ice_spear_level: int = 1
+
+# Enemy related
+var enemies_close = []
+@onready var enemy_detection_area := %EnemyDetectionArea as Area2D
+
+
 #@onready var muzzle := $Muzzle as Marker2D
 #@onready var muzzle_flash := $Muzzle/MuzzleFlash as Sprite2D
 
@@ -27,6 +45,13 @@ func _ready() -> void:
 	else:
 		bullets = get_tree().root.find_child("Bullets", true, false) as Node
 	pass
+	
+	assert(enemy_detection_area.body_entered.connect(_on_enemy_entered_detection) == OK)
+	assert(enemy_detection_area.body_exited.connect(_on_enemy_exited_detection) == OK)
+	
+	assert(ice_spear_timer.timeout.connect(_on_ice_spear_timer_timeout) == OK)
+	assert(ice_spear_attack_timer.timeout.connect(_on_ice_spear_attack_timer_timeout) == OK)
+	attack()
 
 
 func _physics_process(_delta: float) -> void:
@@ -67,9 +92,8 @@ func sprite_animation() -> void:
 	pass
 
 
-func _on_hurt_box_hurt(damage: float) -> void:
+func _on_hurt_box_hurt(damage: float, _angle: Vector2, _knock_back: float ) -> void:
 	health.take_damage(damage)
-	print(health.current_hp)
 	pass
 
 
@@ -77,6 +101,73 @@ func _on_health_dead() -> void:
 	queue_free()
 	pass
 
+
+func attack() -> void:
+	if ice_spear_level > 0:
+		ice_spear_timer.wait_time = ice_spear_attack_speed
+		if ice_spear_timer.is_stopped():
+			ice_spear_timer.start()
+	pass
+
+
+func _on_ice_spear_timer_timeout() -> void:
+	ice_spear_ammo += ice_spear_base_ammo
+	ice_spear_attack_timer.start()
+	pass
+
+
+func _on_ice_spear_attack_timer_timeout() -> void:
+	if ice_spear_ammo > 0:
+		var ice_spear_attack = ice_spear.instantiate()
+		ice_spear_attack.position = position
+		ice_spear_attack.target = get_closest_target()
+		ice_spear_attack.level = ice_spear_level
+		add_child(ice_spear_attack)
+		ice_spear_ammo -= 1
+		if ice_spear_ammo > 0:
+			ice_spear_attack_timer.start()
+		else:
+			ice_spear_attack_timer.stop()
+	pass
+
+
+func get_random_target() -> Vector2:
+	if enemies_close.size() > 0:
+		return enemies_close.pick_random().global_position
+	else:
+		return Vector2.UP
+
+
+func get_closest_target() -> Vector2:
+	if enemies_close.size() > 0:
+		return get_closest_enemy().global_position
+	else:
+		return Vector2.UP
+
+
+func get_closest_enemy():
+	var closest_enemy = null
+	var shortest_distance = INF
+	for enemy in enemies_close:
+		if not is_instance_valid(enemy):
+			continue
+		var distance = global_position.distance_to(enemy.global_position)
+		if distance < shortest_distance:
+			shortest_distance = distance
+			closest_enemy = enemy
+	return closest_enemy
+
+
+func _on_enemy_entered_detection(body: Node2D) -> void:
+	if not enemies_close.has(body) and body.is_in_group("enemy"):
+		enemies_close.append(body)
+	pass
+
+
+func _on_enemy_exited_detection(body: Node2D) -> void:
+	if enemies_close.has(body):
+		enemies_close.erase(body)
+	pass
 
 
 #func _unhandled_input(event: InputEvent) -> void:

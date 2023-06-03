@@ -20,7 +20,7 @@ script = ExtResource("6_bofcq")
 time_start = 5
 time_end = 60
 enemy = ExtResource("3_kefvf")
-enemy_num = 10
+enemy_num = 1
 enemy_spawn_delay = 0
 
 [node name="World" type="Node2D"]

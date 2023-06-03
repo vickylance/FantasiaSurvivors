@@ -1,10 +1,12 @@
-[gd_scene load_steps=12 format=3 uid="uid://p8cgk5qi7upk"]
+[gd_scene load_steps=14 format=3 uid="uid://p8cgk5qi7upk"]
 
 [ext_resource type="Script" path="res://src/actors/enemy/enemy.gd" id="1_ibg2p"]
 [ext_resource type="Texture2D" uid="uid://cu74qmvpfi0kc" path="res://Textures/Enemy/kolbold_weak.png" id="1_imuiw"]
+[ext_resource type="PackedScene" uid="uid://g3mesl4u8ecu" path="res://src/components/explosion/explosion.tscn" id="2_uippo"]
 [ext_resource type="PackedScene" uid="uid://bkr1af0pq75iq" path="res://src/components/health/health.tscn" id="3_tk88i"]
 [ext_resource type="PackedScene" uid="uid://dx2b07gnm6awb" path="res://src/components/hurt_box/hurt_box.tscn" id="4_mybjs"]
 [ext_resource type="PackedScene" uid="uid://dkdrt10nft844" path="res://src/components/hit_box/hit_box.tscn" id="5_meteb"]
+[ext_resource type="AudioStream" uid="uid://c7uq31inxgln8" path="res://Audio/SoundEffect/enemy_hit.ogg" id="6_12fiw"]
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_qlcho"]
 radius = 5.0
@@ -55,8 +57,12 @@ size = Vector2(14, 26)
 size = Vector2(12, 22)
 
 [node name="Enemy" type="CharacterBody2D" groups=["enemy"]]
+collision_layer = 5
+collision_mask = 5
 motion_mode = 1
 script = ExtResource("1_ibg2p")
+move_speed = 50.0
+death_anim = ExtResource("2_uippo")
 metadata/_edit_group_ = true
 
 [node name="Sprite" type="Sprite2D" parent="."]
@@ -78,10 +84,13 @@ libraries = {
 
 [node name="Health" parent="." instance=ExtResource("3_tk88i")]
 unique_name_in_owner = true
+max_hp = 10.0
 
-[node name="HurtBox" parent="." instance=ExtResource("4_mybjs")]
+[node name="HurtBox" parent="." groups=["enemy"] instance=ExtResource("4_mybjs")]
 unique_name_in_owner = true
+collision_layer = 4
 collision_mask = 4
+hurt_box_type = 1
 
 [node name="Shape" parent="HurtBox" index="0"]
 position = Vector2(1, 3)
@@ -96,6 +105,11 @@ collision_layer = 2
 position = Vector2(2, 3)
 shape = SubResource("RectangleShape2D_lmi2x")
 debug_color = Color(0.65098, 0.521569, 0, 0.278431)
+
+[node name="HurtAudio" type="AudioStreamPlayer2D" parent="."]
+unique_name_in_owner = true
+stream = ExtResource("6_12fiw")
+volume_db = -20.0
 
 [editable path="HurtBox"]
 [editable path="HitBox"]
