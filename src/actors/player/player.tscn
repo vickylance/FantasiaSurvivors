@@ -1,10 +1,11 @@
-[gd_scene load_steps=10 format=3 uid="uid://blbt8mhmyu5sj"]
+[gd_scene load_steps=11 format=3 uid="uid://blbt8mhmyu5sj"]
 
 [ext_resource type="Texture2D" uid="uid://de3746bnxlpmc" path="res://Textures/Player/player_sprite.png" id="1_ftv13"]
 [ext_resource type="Script" path="res://src/actors/player/player.gd" id="1_m5661"]
 [ext_resource type="PackedScene" uid="uid://bw80ifiy63jsn" path="res://src/components/attack/ice_spear/ice_spear.tscn" id="2_kgjgv"]
 [ext_resource type="PackedScene" uid="uid://bkr1af0pq75iq" path="res://src/components/health/health.tscn" id="3_2sqql"]
 [ext_resource type="PackedScene" uid="uid://bge8i8polnf4i" path="res://src/components/tornado/tornado.tscn" id="3_sjs75"]
+[ext_resource type="PackedScene" uid="uid://dskxx4ssuan3v" path="res://src/components/attack/javellin/javellin.tscn" id="4_n0efo"]
 [ext_resource type="PackedScene" uid="uid://dx2b07gnm6awb" path="res://src/components/hurt_box/hurt_box.tscn" id="4_oodrj"]
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_vdo4k"]
@@ -23,6 +24,7 @@ script = ExtResource("1_m5661")
 move_speed = 100.0
 ice_spear = ExtResource("2_kgjgv")
 tornado = ExtResource("3_sjs75")
+javellin = ExtResource("4_n0efo")
 
 [node name="Sprite" type="Sprite2D" parent="."]
 unique_name_in_owner = true
@@ -67,6 +69,9 @@ wait_time = 3.0
 [node name="TornadoAttackTimer" type="Timer" parent="Attack/TornadoTimer"]
 unique_name_in_owner = true
 wait_time = 0.2
+
+[node name="JavellinBase" type="Node2D" parent="Attack"]
+unique_name_in_owner = true
 
 [node name="EnemyDetectionArea" type="Area2D" parent="."]
 unique_name_in_owner = true

@@ -13,12 +13,14 @@ var last_movement := Vector2.UP
 # Attacks
 @export var ice_spear: PackedScene
 @export var tornado: PackedScene
+@export var javellin: PackedScene
 
 # Attack nodes
 @onready var ice_spear_timer := %IceSpearTimer as Timer
 @onready var ice_spear_attack_timer := %IceSpearAttackTimer as Timer
 @onready var tornado_timer := %TornadoTimer as Timer
 @onready var tornado_attack_timer := %TornadoAttackTimer as Timer
+@onready var javellin_base := %JavellinBase as Node2D
 
 # IceSpear
 var ice_spear_ammo: int = 0
@@ -28,9 +30,14 @@ var ice_spear_level: int = 0
 
 # Tornado
 var tornado_ammo: int = 0
-var tornado_base_ammo: int = 5
+var tornado_base_ammo: int = 1
 var tornado_attack_speed: float = 3
-var tornado_level: int = 1
+var tornado_level: int = 0
+
+# Javellin
+var javellin_ammo: int = 3
+var javellin_level: int = 1
+
 
 # Enemy related
 var enemies_close = []
@@ -126,6 +133,20 @@ func attack() -> void:
 		tornado_timer.wait_time = tornado_attack_speed
 		if tornado_timer.is_stopped():
 			tornado_timer.start()
+	if javellin_level > 0:
+		spawn_javellin()
+	pass
+
+
+func spawn_javellin() -> void:
+	var get_javellin_total = javellin_base.get_child_count()
+	var calc_spawns = javellin_ammo - get_javellin_total
+	while calc_spawns > 0:
+		var javellin_spawn = javellin.instantiate()
+		javellin_spawn.global_position = global_position
+		javellin_base.add_child(javellin_spawn)
+		print("spawned")
+		calc_spawns -= 1
 	pass
 
 
