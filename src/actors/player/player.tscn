@@ -1,4 +1,4 @@
-[gd_scene load_steps=11 format=3 uid="uid://blbt8mhmyu5sj"]
+[gd_scene load_steps=18 format=3 uid="uid://blbt8mhmyu5sj"]
 
 [ext_resource type="Texture2D" uid="uid://de3746bnxlpmc" path="res://Textures/Player/player_sprite.png" id="1_ftv13"]
 [ext_resource type="Script" path="res://src/actors/player/player.gd" id="1_m5661"]
@@ -7,6 +7,11 @@
 [ext_resource type="PackedScene" uid="uid://bge8i8polnf4i" path="res://src/components/tornado/tornado.tscn" id="3_sjs75"]
 [ext_resource type="PackedScene" uid="uid://dskxx4ssuan3v" path="res://src/components/attack/javellin/javellin.tscn" id="4_n0efo"]
 [ext_resource type="PackedScene" uid="uid://dx2b07gnm6awb" path="res://src/components/hurt_box/hurt_box.tscn" id="4_oodrj"]
+[ext_resource type="PackedScene" uid="uid://duxg86iy283ms" path="res://src/components/experience/experience.tscn" id="8_lo83w"]
+[ext_resource type="Script" path="res://src/components/experience/experience.gd" id="9_xtlim"]
+[ext_resource type="Texture2D" uid="uid://ctmonljt3gv44" path="res://Textures/GUI/exp_background.png" id="10_0t7yo"]
+[ext_resource type="Texture2D" uid="uid://b3i0181gr36qn" path="res://Textures/GUI/exp_progress.png" id="11_xwkv7"]
+[ext_resource type="FontFile" uid="uid://btbo567e07wpn" path="res://Font/tenderness.otf" id="12_2l2k2"]
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_vdo4k"]
 radius = 6.0
@@ -17,6 +22,11 @@ size = Vector2(12, 21)
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_cfn72"]
 radius = 380.0
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_dpwgf"]
+radius = 50.0
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_mk4e0"]
 
 [node name="Player" type="CharacterBody2D" groups=["player"]]
 motion_mode = 1
@@ -43,6 +53,10 @@ one_shot = true
 [node name="Health" parent="." instance=ExtResource("3_2sqql")]
 unique_name_in_owner = true
 max_hp = 10000.0
+
+[node name="Experience" parent="." instance=ExtResource("8_lo83w")]
+unique_name_in_owner = true
+script = ExtResource("9_xtlim")
 
 [node name="HurtBox" parent="." instance=ExtResource("4_oodrj")]
 unique_name_in_owner = true
@@ -82,5 +96,58 @@ monitorable = false
 [node name="Shape" type="CollisionShape2D" parent="EnemyDetectionArea"]
 shape = SubResource("CircleShape2D_cfn72")
 debug_color = Color(0, 0.6, 0.701961, 0.129412)
+
+[node name="GrabArea" type="Area2D" parent="."]
+unique_name_in_owner = true
+collision_layer = 0
+collision_mask = 8
+
+[node name="Shape" type="CollisionShape2D" parent="GrabArea"]
+shape = SubResource("CircleShape2D_dpwgf")
+
+[node name="CollectArea" type="Area2D" parent="."]
+unique_name_in_owner = true
+collision_layer = 0
+collision_mask = 8
+
+[node name="Shape" type="CollisionShape2D" parent="CollectArea"]
+shape = SubResource("CircleShape2D_mk4e0")
+
+[node name="GUILayer" type="CanvasLayer" parent="."]
+
+[node name="GUI" type="Control" parent="GUILayer"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="ExperienceBar" type="TextureProgressBar" parent="GUILayer/GUI"]
+unique_name_in_owner = true
+layout_mode = 1
+anchors_preset = 10
+anchor_right = 1.0
+offset_bottom = 1.0
+grow_horizontal = 2
+texture_under = ExtResource("10_0t7yo")
+texture_progress = ExtResource("11_xwkv7")
+
+[node name="LevelLabel" type="Label" parent="GUILayer/GUI/ExperienceBar"]
+unique_name_in_owner = true
+layout_mode = 1
+anchors_preset = 14
+anchor_top = 0.5
+anchor_right = 1.0
+anchor_bottom = 0.5
+offset_left = 551.0
+offset_top = -11.0
+offset_bottom = 10.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_fonts/font = ExtResource("12_2l2k2")
+theme_override_font_sizes/font_size = 16
+text = "Level 1"
+vertical_alignment = 2
 
 [editable path="HurtBox"]

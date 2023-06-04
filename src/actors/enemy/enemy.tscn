@@ -1,9 +1,10 @@
-[gd_scene load_steps=14 format=3 uid="uid://p8cgk5qi7upk"]
+[gd_scene load_steps=15 format=3 uid="uid://p8cgk5qi7upk"]
 
 [ext_resource type="Script" path="res://src/actors/enemy/enemy.gd" id="1_ibg2p"]
 [ext_resource type="Texture2D" uid="uid://cu74qmvpfi0kc" path="res://Textures/Enemy/kolbold_weak.png" id="1_imuiw"]
 [ext_resource type="PackedScene" uid="uid://g3mesl4u8ecu" path="res://src/components/explosion/explosion.tscn" id="2_uippo"]
 [ext_resource type="PackedScene" uid="uid://bkr1af0pq75iq" path="res://src/components/health/health.tscn" id="3_tk88i"]
+[ext_resource type="PackedScene" uid="uid://b1bf4mpkaf3hj" path="res://src/components/collectibles/experience_gem/experience_gem.tscn" id="3_ykkbt"]
 [ext_resource type="PackedScene" uid="uid://dx2b07gnm6awb" path="res://src/components/hurt_box/hurt_box.tscn" id="4_mybjs"]
 [ext_resource type="PackedScene" uid="uid://dkdrt10nft844" path="res://src/components/hit_box/hit_box.tscn" id="5_meteb"]
 [ext_resource type="AudioStream" uid="uid://c7uq31inxgln8" path="res://Audio/SoundEffect/enemy_hit.ogg" id="6_12fiw"]
@@ -63,6 +64,7 @@ motion_mode = 1
 script = ExtResource("1_ibg2p")
 move_speed = 50.0
 death_anim = ExtResource("2_uippo")
+exp_gem = ExtResource("3_ykkbt")
 metadata/_edit_group_ = true
 
 [node name="Sprite" type="Sprite2D" parent="."]

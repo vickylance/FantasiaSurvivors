@@ -5,9 +5,12 @@ class_name Enemy
 @export var knock_back_recovery := 3.5
 var knock_back = Vector2.ZERO
 @export var death_anim: PackedScene
+@export var experience := 1
+@export var exp_gem: PackedScene
 
 
 @onready var player: Player = get_tree().get_first_node_in_group("player")
+@onready var loot_base := get_tree().get_first_node_in_group("loot")
 @onready var sprite: Sprite2D = %Sprite as Sprite2D
 @onready var health := %Health as Health
 @onready var hurt_box := %HurtBox as HurtBox
@@ -71,5 +74,11 @@ func death() -> void:
 	enemy_death.scale = sprite.scale
 	enemy_death.global_position = global_position
 	get_parent().call_deferred("add_child", enemy_death)
+	
+	var new_gem: ExperienceGem = exp_gem.instantiate()
+	new_gem.global_position = global_position
+	new_gem.experience = experience
+	loot_base.call_deferred("add_child", new_gem)
+	
 	queue_free()
 	pass

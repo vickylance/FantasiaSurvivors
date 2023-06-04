@@ -10,6 +10,11 @@ var last_movement := Vector2.UP
 @onready var health := %Health as Health
 @onready var hurt_box := %HurtBox as HurtBox
 
+# Collectibles
+@onready var grab_area := %GrabArea as Area2D
+@onready var collect_area := %CollectArea as Area2D
+@onready var experience := %Experience as Experience
+
 # Attacks
 @export var ice_spear: PackedScene
 @export var tornado: PackedScene
@@ -44,6 +49,10 @@ var enemies_close = []
 @onready var enemy_detection_area := %EnemyDetectionArea as Area2D
 
 
+# GUI
+@onready var exp_bar := %ExperienceBar as TextureProgressBar
+@onready var level_label := %LevelLabel as Label
+
 #@onready var muzzle := $Muzzle as Marker2D
 #@onready var muzzle_flash := $Muzzle/MuzzleFlash as Sprite2D
 
@@ -71,7 +80,12 @@ func _ready() -> void:
 	
 	assert(tornado_timer.timeout.connect(_on_tornado_timer_timeout) == OK)
 	assert(tornado_attack_timer.timeout.connect(_on_tornado_attack_timer_timeout) == OK)
+	
+	assert(grab_area.area_entered.connect(_on_grab_area_entered) == OK)
+	assert(collect_area.area_entered.connect(_on_collect_area_entered) == OK)
 	attack()
+	
+	set_exp_bar()
 
 
 func _physics_process(_delta: float) -> void:
@@ -230,6 +244,28 @@ func _on_enemy_exited_detection(body: Node2D) -> void:
 		enemies_close.erase(body)
 	pass
 
+
+func _on_collect_area_entered(area: Area2D) -> void:
+	if area.is_in_group("loot"):
+#		if area.is_class("ExperienceGem"):
+		var gem_exp = area.collect()
+		experience.calculate_experience(gem_exp)
+		set_exp_bar()
+	pass
+
+
+func _on_grab_area_entered(area: Area2D) -> void:
+	if area.is_in_group("loot"):
+#		if area.is_class("ExperienceGem"):
+		area.target = self
+	pass
+
+
+func set_exp_bar() -> void:
+	exp_bar.value = experience.experience
+	exp_bar.max_value = experience.exp_required
+	level_label.text = "Level " + str(experience.level)
+	pass
 
 #func _unhandled_input(event: InputEvent) -> void:
 #	if event.is_action_pressed("fire"):
