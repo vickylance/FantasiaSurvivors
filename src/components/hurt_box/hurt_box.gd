@@ -22,7 +22,6 @@ func _ready() -> void:
 
 
 func _on_area_entered(area: Area2D) -> void:
-	print("enemy hurt Area entered")
 	if area.is_in_group("attack"):
 		if area.get("damage") != null:
 			match hurt_box_type:
