@@ -1,0 +1,15 @@
+[gd_resource type="Resource" script_class="UpgradeItem" load_steps=4 format=3 uid="uid://bynwrq0j4k317"]
+
+[ext_resource type="Texture2D" uid="uid://cewnts0epq7sy" path="res://Textures/Items/Upgrades/thick_new.png" id="1_fbj1x"]
+[ext_resource type="Resource" uid="uid://bv2tg2gpd18sp" path="res://src/components/upgrades/items/tome_3.tres" id="2_ab414"]
+[ext_resource type="Script" path="res://src/components/upgrades/upgrade_item.gd" id="3_r357x"]
+
+[resource]
+script = ExtResource("3_r357x")
+name = "tome4"
+icon = ExtResource("1_fbj1x")
+display_name = "Tome"
+description = "Increases the size of spells an additional 10% of their base size"
+level = 4
+prerequisite = Array[ExtResource("3_r357x")]([ExtResource("2_ab414")])
+type = "Weapon"

@@ -1,0 +1,14 @@
+[gd_resource type="Resource" script_class="UpgradeItem" load_steps=3 format=3 uid="uid://dw5ewelb8knvr"]
+
+[ext_resource type="Script" path="res://src/components/upgrades/upgrade_item.gd" id="1_3dw67"]
+[ext_resource type="Texture2D" uid="uid://cerge3kx8gfwv" path="res://Textures/Items/Weapons/ice_spear.png" id="1_6swra"]
+
+[resource]
+script = ExtResource("1_3dw67")
+name = "icespear1"
+icon = ExtResource("1_6swra")
+display_name = "Ice Spear"
+description = "A spear of ice is thrown at a random enemy"
+level = 1
+prerequisite = Array[ExtResource("1_3dw67")]([])
+type = "Weapon"

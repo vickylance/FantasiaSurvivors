@@ -1,0 +1,15 @@
+[gd_resource type="Resource" script_class="UpgradeItem" load_steps=4 format=3 uid="uid://coobhckpjoa5a"]
+
+[ext_resource type="Texture2D" uid="uid://dbhcxryy5oep" path="res://Textures/Items/Upgrades/boots_4_green.png" id="1_boqwb"]
+[ext_resource type="Resource" uid="uid://cgn2i7o2yuwma" path="res://src/components/upgrades/items/speed_2.tres" id="2_a8dgc"]
+[ext_resource type="Script" path="res://src/components/upgrades/upgrade_item.gd" id="3_xjnpn"]
+
+[resource]
+script = ExtResource("3_xjnpn")
+name = "speed3"
+icon = ExtResource("1_boqwb")
+display_name = "Speed"
+description = "Movement Speed Increased by an additional 50% of base speed"
+level = 3
+prerequisite = Array[ExtResource("3_xjnpn")]([ExtResource("2_a8dgc")])
+type = "Weapon"

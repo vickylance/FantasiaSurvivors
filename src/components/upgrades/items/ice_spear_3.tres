@@ -1,0 +1,15 @@
+[gd_resource type="Resource" script_class="UpgradeItem" load_steps=4 format=3 uid="uid://fge7h5tvyyd2"]
+
+[ext_resource type="Texture2D" uid="uid://cerge3kx8gfwv" path="res://Textures/Items/Weapons/ice_spear.png" id="1_f4c3b"]
+[ext_resource type="Resource" uid="uid://btbeajcvrea2u" path="res://src/components/upgrades/items/ice_spear_2.tres" id="2_s1f64"]
+[ext_resource type="Script" path="res://src/components/upgrades/upgrade_item.gd" id="3_0nr6t"]
+
+[resource]
+script = ExtResource("3_0nr6t")
+name = "icespear3"
+icon = ExtResource("1_f4c3b")
+display_name = "Ice Spear"
+description = "Ice spears now pass through another enemy and do +3 damage"
+level = 3
+prerequisite = Array[ExtResource("3_0nr6t")]([ExtResource("2_s1f64")])
+type = "Weapon"

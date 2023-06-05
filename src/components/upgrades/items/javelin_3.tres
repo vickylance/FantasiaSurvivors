@@ -1,0 +1,15 @@
+[gd_resource type="Resource" script_class="UpgradeItem" load_steps=4 format=3 uid="uid://bkguqxxy8ycpe"]
+
+[ext_resource type="Texture2D" uid="uid://c6tbbpaqxsymo" path="res://Textures/Items/Weapons/javelin_3_new.png" id="1_c823v"]
+[ext_resource type="Resource" uid="uid://dsstlb6nwnfrr" path="res://src/components/upgrades/items/javelin_2.tres" id="2_00qtp"]
+[ext_resource type="Script" path="res://src/components/upgrades/upgrade_item.gd" id="3_yltbx"]
+
+[resource]
+script = ExtResource("3_yltbx")
+name = "javelin3"
+icon = ExtResource("1_c823v")
+display_name = "Javelin"
+description = "The javelin will attack another additional enemy per attack"
+level = 3
+prerequisite = Array[ExtResource("3_yltbx")]([ExtResource("2_00qtp")])
+type = "Weapon"
