@@ -6,6 +6,9 @@ var level := 1
 var collected_experience := 0
 var exp_required := 0
 
+signal level_up()
+
+
 func _ready() -> void:
 	calculate_experience(0)
 
@@ -15,10 +18,9 @@ func calculate_experience(gem_exp: int) -> void:
 	if experience + collected_experience >= exp_required: #level up
 		collected_experience -= exp_required - experience
 		level += 1
-		print("Level up: ", level)
 		experience = 0
 		exp_required = calculate_experience_cap()
-		calculate_experience(0) # To calculate if left over exp enough to level up further.
+		level_up.emit()
 	else:
 		experience += collected_experience
 		collected_experience = 0
