@@ -1,0 +1,15 @@
+[gd_resource type="Resource" script_class="UpgradeItem" load_steps=4 format=3 uid="uid://bc0ug7y385hbr"]
+
+[ext_resource type="Texture2D" uid="uid://cs7vpywh5fi4u" path="res://Textures/Items/Weapons/tornado.png" id="1_mkh08"]
+[ext_resource type="Resource" uid="uid://cb7iwf02k6jeh" path="res://src/components/upgrades/items/tornado_4.tres" id="2_2ofip"]
+[ext_resource type="Script" path="res://src/components/upgrades/upgrade_item.gd" id="3_ppms8"]
+
+[resource]
+script = ExtResource("3_ppms8")
+name = "tornado5"
+icon = ExtResource("1_mkh08")
+display_name = "Tornado"
+description = "An additional tornado is created and does +2 damage"
+level = 5
+prerequisite = Array[ExtResource("3_ppms8")]([ExtResource("2_2ofip")])
+type = "Weapon"

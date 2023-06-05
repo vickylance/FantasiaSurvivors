@@ -7,6 +7,8 @@ class_name Health
 
 signal dead()
 signal damaged(health: float)
+signal healed(health: float)
+
 
 func take_damage(damage: float) -> void:
 	if current_hp - damage > 0:
@@ -16,4 +18,10 @@ func take_damage(damage: float) -> void:
 		current_hp = 0
 		dead.emit()
 		damaged.emit(current_hp)
+	pass
+
+
+func heal(heal_amount: float) -> void:
+	current_hp = clampf(current_hp + heal_amount, 0, max_hp)
+	healed.emit(current_hp)
 	pass

@@ -1,0 +1,14 @@
+[gd_resource type="Resource" script_class="UpgradeItem" load_steps=3 format=3 uid="uid://bsx5irsy4hy1v"]
+
+[ext_resource type="Texture2D" uid="uid://cs7vpywh5fi4u" path="res://Textures/Items/Weapons/tornado.png" id="1_0effg"]
+[ext_resource type="Script" path="res://src/components/upgrades/upgrade_item.gd" id="2_cqvgl"]
+
+[resource]
+script = ExtResource("2_cqvgl")
+name = "tornado1"
+icon = ExtResource("1_0effg")
+display_name = "Tornado"
+description = "A tornado is created and random heads somewhere in the players direction"
+level = 1
+prerequisite = Array[ExtResource("2_cqvgl")]([])
+type = "Weapon"

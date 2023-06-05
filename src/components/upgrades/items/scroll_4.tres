@@ -1,0 +1,15 @@
+[gd_resource type="Resource" script_class="UpgradeItem" load_steps=4 format=3 uid="uid://d2meorh2q1gb8"]
+
+[ext_resource type="Texture2D" uid="uid://bu7wwhci5cyto" path="res://Textures/Items/Upgrades/scroll_old.png" id="1_i1i3v"]
+[ext_resource type="Resource" uid="uid://es7g4ncosqgi" path="res://src/components/upgrades/items/scroll_2.tres" id="2_tq1xg"]
+[ext_resource type="Script" path="res://src/components/upgrades/upgrade_item.gd" id="3_tj5qr"]
+
+[resource]
+script = ExtResource("3_tj5qr")
+name = "scroll3"
+icon = ExtResource("1_i1i3v")
+display_name = "Scroll"
+description = "Decreases of the cooldown of spells by an additional 5% of their base time"
+level = 3
+prerequisite = Array[ExtResource("3_tj5qr")]([ExtResource("2_tq1xg")])
+type = "Weapon"

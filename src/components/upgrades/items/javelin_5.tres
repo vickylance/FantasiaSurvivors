@@ -1,0 +1,15 @@
+[gd_resource type="Resource" script_class="UpgradeItem" load_steps=4 format=3 uid="uid://yysss5iy3r7f"]
+
+[ext_resource type="Texture2D" uid="uid://c6tbbpaqxsymo" path="res://Textures/Items/Weapons/javelin_3_new.png" id="1_jusxl"]
+[ext_resource type="Resource" uid="uid://dekqksdf6px52" path="res://src/components/upgrades/items/javelin_4.tres" id="2_a55an"]
+[ext_resource type="Script" path="res://src/components/upgrades/upgrade_item.gd" id="3_onlli"]
+
+[resource]
+script = ExtResource("3_onlli")
+name = "javelin5"
+icon = ExtResource("1_jusxl")
+display_name = "Javelin"
+description = "An additional Javelin is thrown and does +3 damage"
+level = 5
+prerequisite = Array[ExtResource("3_onlli")]([ExtResource("2_a55an")])
+type = "Weapon"

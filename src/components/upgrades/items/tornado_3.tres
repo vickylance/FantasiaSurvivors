@@ -1,0 +1,15 @@
+[gd_resource type="Resource" script_class="UpgradeItem" load_steps=4 format=3 uid="uid://b2w5fyhx5qxme"]
+
+[ext_resource type="Texture2D" uid="uid://cs7vpywh5fi4u" path="res://Textures/Items/Weapons/tornado.png" id="1_el0ha"]
+[ext_resource type="Resource" uid="uid://m5aqe2vb7awn" path="res://src/components/upgrades/items/tornado_2.tres" id="2_53ur7"]
+[ext_resource type="Script" path="res://src/components/upgrades/upgrade_item.gd" id="3_5vfbo"]
+
+[resource]
+script = ExtResource("3_5vfbo")
+name = "tornado3"
+icon = ExtResource("1_el0ha")
+display_name = "Tornado"
+description = "The Tornado cooldown is reduced by 0.5 seconds"
+level = 3
+prerequisite = Array[ExtResource("3_5vfbo")]([ExtResource("2_53ur7")])
+type = "Weapon"

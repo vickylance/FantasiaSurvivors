@@ -1,7 +1,6 @@
 extends CharacterBody2D
 class_name Player
 
-#@export var BulletScene: PackedScene
 @export var move_speed := 150.0
 var last_movement := Vector2.UP
 
@@ -18,30 +17,30 @@ var last_movement := Vector2.UP
 # Attacks
 @export var ice_spear: PackedScene
 @export var tornado: PackedScene
-@export var javellin: PackedScene
+@export var javelin: PackedScene
 
 # Attack nodes
 @onready var ice_spear_timer := %IceSpearTimer as Timer
 @onready var ice_spear_attack_timer := %IceSpearAttackTimer as Timer
 @onready var tornado_timer := %TornadoTimer as Timer
 @onready var tornado_attack_timer := %TornadoAttackTimer as Timer
-@onready var javellin_base := %JavellinBase as Node2D
+@onready var javelin_base := %JavelinBase as Node2D
 
 # IceSpear
 var ice_spear_ammo: int = 0
-var ice_spear_base_ammo: int = 1
+var ice_spear_base_ammo: int = 0
 var ice_spear_attack_speed: float = 1.5
 var ice_spear_level: int = 0
 
 # Tornado
 var tornado_ammo: int = 0
-var tornado_base_ammo: int = 1
+var tornado_base_ammo: int = 0
 var tornado_attack_speed: float = 3
 var tornado_level: int = 0
 
-# Javellin
-var javellin_ammo: int = 3
-var javellin_level: int = 1
+# Javelin
+var javelin_ammo: int = 1
+var javelin_level: int = 1
 
 
 # Enemy related
@@ -49,28 +48,28 @@ var enemies_close = []
 @onready var enemy_detection_area := %EnemyDetectionArea as Area2D
 
 
+# Upgrades
+var collected_upgrades: Array[UpgradeItem] = []
+var upgrade_options: Array = []
+var armor = 0
+var speed = 0
+var spell_cooldown = 0
+var spell_size = 0
+var additional_attacks = 0
+
+
 # GUI
 @onready var exp_bar := %ExperienceBar as TextureProgressBar
 @onready var level_label := %LevelLabel as Label
-
-#@onready var muzzle := $Muzzle as Marker2D
-#@onready var muzzle_flash := $Muzzle/MuzzleFlash as Sprite2D
-
-var bullets: Node
+@onready var level_panel := %LevelUp as Panel
+@onready var item_option_list := %UpgradeOptions as VBoxContainer
+@onready var sound_level_up := %SoundLevelUp as AudioStreamPlayer
+@export var item_upgrade_option: PackedScene
 
 
 func _ready() -> void:
 	assert(hurt_box.hurt.connect(_on_hurt_box_hurt) == OK)
 	assert(health.dead.connect(_on_health_dead) == OK)
-	
-	if not is_instance_valid(get_tree().root.find_child("Bullets", true, false) as Node):
-		var newNode = Node.new()
-		newNode.name = "Bullets"
-		get_tree().root.add_child.call_deferred(newNode)
-		bullets = newNode
-	else:
-		bullets = get_tree().root.find_child("Bullets", true, false) as Node
-	pass
 	
 	assert(enemy_detection_area.body_entered.connect(_on_enemy_entered_detection) == OK)
 	assert(enemy_detection_area.body_exited.connect(_on_enemy_exited_detection) == OK)
@@ -85,6 +84,7 @@ func _ready() -> void:
 	assert(collect_area.area_entered.connect(_on_collect_area_entered) == OK)
 	attack()
 	
+	assert(experience.level_up.connect(level_up) == OK)
 	set_exp_bar()
 
 
@@ -147,25 +147,24 @@ func attack() -> void:
 		tornado_timer.wait_time = tornado_attack_speed
 		if tornado_timer.is_stopped():
 			tornado_timer.start()
-	if javellin_level > 0:
-		spawn_javellin()
+	if javelin_level > 0:
+		spawn_javelin()
 	pass
 
 
-func spawn_javellin() -> void:
-	var get_javellin_total = javellin_base.get_child_count()
-	var calc_spawns = javellin_ammo - get_javellin_total
+func spawn_javelin() -> void:
+	var get_javelin_total = javelin_base.get_child_count()
+	var calc_spawns = (javelin_ammo + additional_attacks) - get_javelin_total
 	while calc_spawns > 0:
-		var javellin_spawn = javellin.instantiate()
-		javellin_spawn.global_position = global_position
-		javellin_base.add_child(javellin_spawn)
-		print("spawned")
+		var javelin_spawn = javelin.instantiate()
+		javelin_spawn.global_position = global_position
+		javelin_base.add_child(javelin_spawn)
 		calc_spawns -= 1
 	pass
 
 
 func _on_ice_spear_timer_timeout() -> void:
-	ice_spear_ammo += ice_spear_base_ammo
+	ice_spear_ammo += ice_spear_base_ammo + additional_attacks
 	ice_spear_attack_timer.start()
 	pass
 
@@ -186,7 +185,7 @@ func _on_ice_spear_attack_timer_timeout() -> void:
 
 
 func _on_tornado_timer_timeout() -> void:
-	tornado_ammo += tornado_base_ammo
+	tornado_ammo += tornado_base_ammo + additional_attacks
 	tornado_attack_timer.start()
 	pass
 
@@ -264,29 +263,119 @@ func _on_grab_area_entered(area: Area2D) -> void:
 func set_exp_bar() -> void:
 	exp_bar.value = experience.experience
 	exp_bar.max_value = experience.exp_required
-	level_label.text = "Level " + str(experience.level)
 	pass
 
-#func _unhandled_input(event: InputEvent) -> void:
-#	if event.is_action_pressed("fire"):
-#		shoot()
-#	pass
+
+func level_up() -> void:
+	sound_level_up.play()
+	level_label.text = "Level " + str(experience.level)
+	var tween = level_panel.create_tween()
+	tween.tween_property(level_panel, "position", Vector2(220, 50), 0.2).set_trans(Tween.TRANS_QUINT).set_ease(Tween.EASE_OUT)
+	tween.play()
+	level_panel.visible = true
+	
+	var options = 0
+	var options_max = 3
+	while options < options_max:
+		var option_choice: ItemOption = item_upgrade_option.instantiate()
+		option_choice.item = get_random_item()
+		item_option_list.add_child(option_choice)
+		options += 1
+	
+	get_tree().paused = true
+	pass
 
 
-#func shoot() -> void:
-#	if not bullets: return
-#	var bullet_instance := BulletScene.instantiate()
-#	bullet_instance.global_position = muzzle.global_position
-#	var target := get_global_mouse_position()
-#	var direction_to_target = bullet_instance.global_position.direction_to(target)
-#	bullet_instance.rotation = rotation + bullet_instance.rotation
-#	bullet_instance.set_direction(direction_to_target)
-#	bullet_instance.set_timed_bullet(false)
-#	bullet_instance.set_bullet_range(500)
-#	bullets.add_child(bullet_instance)
-#
-#	muzzle_flash.visible = true
-#	await get_tree().create_timer(0.1).timeout
-#	muzzle_flash.visible = false
-#	pass
+func upgrade_character(upgrade: UpgradeItem) -> void:
+	match upgrade.name:
+		"icespear1":
+			ice_spear_level = 1
+			ice_spear_base_ammo += 1
+		"icespear2":
+			ice_spear_level = 2
+			ice_spear_base_ammo += 1
+		"icespear3":
+			ice_spear_level = 3
+		"icespear4":
+			ice_spear_level = 4
+			ice_spear_base_ammo += 2
+		"icespear5":
+			ice_spear_level = 5
+			ice_spear_base_ammo += 2
+		"tornado1":
+			tornado_level = 1
+			tornado_base_ammo += 1
+		"tornado2":
+			tornado_level = 2
+			tornado_base_ammo += 1
+		"tornado3":
+			tornado_level = 3
+			tornado_attack_speed -= 0.5
+		"tornado4":
+			tornado_level = 4
+			tornado_base_ammo += 1
+		"tornado5":
+			tornado_level = 5
+			tornado_base_ammo += 1
+		"javelin1":
+			javelin_level = 1
+			javelin_ammo = 1
+		"javelin2":
+			javelin_level = 2
+		"javelin3":
+			javelin_level = 3
+		"javelin4":
+			javelin_level = 4
+		"javelin5":
+			javelin_level = 5
+		"armor1","armor2","armor3","armor4","armor5":
+			armor += 1
+		"speed1","speed2","speed3","speed4","speed5":
+			move_speed += 20.0
+		"tome1","tome2","tome3","tome4","tome5":
+			spell_size += 0.10
+		"scroll1","scroll2","scroll3","scroll4","scroll5":
+			spell_cooldown += 0.05
+		"ring1","ring2":
+			additional_attacks += 1
+		"food":
+			health.heal(20)
+	level_panel_reset()
+	get_tree().paused = false
+	upgrade_options.clear()
+	collected_upgrades.append(upgrade)
+	experience.calculate_experience(0) # To calculate if left over exp enough to level up further.
+	pass
 
+
+func level_panel_reset() -> void:
+	var option_children = item_option_list.get_children()
+	for i in option_children:
+		i.queue_free()
+	level_panel.visible = false
+	level_panel.position = Vector2(800, 50)
+	pass
+
+
+func get_random_item() -> UpgradeItem:
+	var db_list = []
+	for upgrade_item in UpgradeDb.upgrades:
+		if upgrade_item in collected_upgrades: # Find already collected upgrades
+			pass
+		elif upgrade_item in upgrade_options: # If the upgrade is already an option
+			pass
+		elif upgrade_item.type != "Weapon": # If the item is not a weapon then pass
+			pass
+		elif upgrade_item.prerequisite.size() > 0: # Check if there are any prerequisites
+			for prerequisite_item in upgrade_item.prerequisite:
+				if not prerequisite_item in collected_upgrades:
+					pass
+				else:
+					db_list.append(upgrade_item)
+		else:
+			db_list.append(upgrade_item)
+	if db_list.size() > 0:
+		var random_item = db_list.pick_random()
+		upgrade_options.append(random_item)
+		return random_item
+	return null

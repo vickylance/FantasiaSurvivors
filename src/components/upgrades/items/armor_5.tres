@@ -1,0 +1,15 @@
+[gd_resource type="Resource" script_class="UpgradeItem" load_steps=4 format=3 uid="uid://deneg773sgs7e"]
+
+[ext_resource type="Texture2D" uid="uid://75k28gl72v08" path="res://Textures/Items/Upgrades/helmet_1.png" id="1_d6xfw"]
+[ext_resource type="Resource" uid="uid://c3o7kwlluc5ud" path="res://src/components/upgrades/items/armor_4.tres" id="2_xe7v6"]
+[ext_resource type="Script" path="res://src/components/upgrades/upgrade_item.gd" id="3_ty4uq"]
+
+[resource]
+script = ExtResource("3_ty4uq")
+name = "armor5"
+icon = ExtResource("1_d6xfw")
+display_name = "Armor"
+description = "Reduces Damage By an additional 1 point"
+level = 5
+prerequisite = Array[ExtResource("3_ty4uq")]([ExtResource("2_xe7v6")])
+type = "Weapon"
