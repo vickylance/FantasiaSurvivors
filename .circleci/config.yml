@@ -43,7 +43,7 @@ jobs:
             ../godot --export win64 project.godot "builds/win64/${GAME_NAME}.exe" || true
       - run:
           name: Upload win64 build
-          command: ./butler push TopDownShooterClient/builds/win64 ${ITCH_USERNAME}/${GAME_NAME}:win-64bit
+          command: ./butler push builds/win64 ${ITCH_USERNAME}/${GAME_NAME}:win-64bit
       - run:
           name: Export win32 client build
           command: |
@@ -51,7 +51,7 @@ jobs:
             ../godot --export win32 project.godot "builds/win32/${GAME_NAME}.exe" || true
       - run:
           name: Upload win32 build
-          command: ./butler push TopDownShooterClient/builds/win32 ${ITCH_USERNAME}/${GAME_NAME}:win-32bit
+          command: ./butler push builds/win32 ${ITCH_USERNAME}/${GAME_NAME}:win-32bit
       - run:
           name: Export linux64 client build
           command: |
@@ -59,7 +59,7 @@ jobs:
             ../godot --export linux64 project.godot "builds/linux64/${GAME_NAME}.x86_64" || true
       - run:
           name: Upload linux64 build
-          command: ./butler push TopDownShooterClient/builds/linux64 ${ITCH_USERNAME}/${GAME_NAME}:linux-64bit
+          command: ./butler push builds/linux64 ${ITCH_USERNAME}/${GAME_NAME}:linux-64bit
       - run:
           name: Export linux32 client build
           command: |
@@ -67,7 +67,7 @@ jobs:
             ../godot --export linux32 project.godot "builds/linux32/${GAME_NAME}.x86" || true
       - run:
           name: Upload linux32 build
-          command: ./butler push TopDownShooterClient/builds/linux32 ${ITCH_USERNAME}/${GAME_NAME}:linux-32bit
+          command: ./butler push builds/linux32 ${ITCH_USERNAME}/${GAME_NAME}:linux-32bit
       - run:
           name: Export mac client build
           command: |
@@ -75,7 +75,7 @@ jobs:
             ../godot --export mac project.godot "builds/mac/${GAME_NAME}.app" || true
       - run:
           name: Upload mac build
-          command: ./butler push TopDownShooterClient/builds/mac/${GAME_NAME}.app ${ITCH_USERNAME}/${GAME_NAME}:mac
+          command: ./butler push builds/mac/${GAME_NAME}.app ${ITCH_USERNAME}/${GAME_NAME}:mac
 workflows:
   build-all-workflow:
     jobs:
