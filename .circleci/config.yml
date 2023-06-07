@@ -15,8 +15,7 @@ jobs:
           name: Install dependencies
           command: |
             sudo apt-get update
-            sudo apt-get -y install wget zip unzip gnupg
-            make decrypt_cfg
+            sudo apt-get -y install wget zip unzip
       - run:
           name: Download Godot 4
           command: |
