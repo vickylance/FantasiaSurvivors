@@ -1,0 +1,83 @@
+version: 2.1
+executors:
+  linux-executor:
+    docker:
+      - image: cimg/base:stable
+        auth:
+          username: $DOCKER_HUB_USER
+          password: $DOCKER_HUB_PASSWORD
+jobs:
+  build-win-linux-mac:
+    executor: linux-executor
+    steps:
+      - checkout
+      - run:
+          name: Install dependencies
+          command: |
+            sudo apt-get update
+            sudo apt-get -y install wget zip unzip gnupg
+            make decrypt_cfg
+      - run:
+          name: Download Godot 4
+          command: |
+            wget -q https://github.com/godotengine/godot/releases/download/${GODOT_VERSION}/Godot_v${GODOT_VERSION}_linux.x86_64.zip
+            unzip Godot_v${GODOT_VERSION}_linux.x86_64.zip
+            mv Godot_v${GODOT_VERSION}_linux.x86_64 godot
+            chmod +x godot
+      - run:
+          name: Download Godot 4 Export Templates
+          command: |
+            wget -q https://github.com/godotengine/godot/releases/download/${GODOT_VERSION}/Godot_v${GODOT_VERSION}_export_templates.tpz
+            mkdir -p ~/.local/share/godot/templates
+            unzip Godot_v${GODOT_VERSION}_export_templates.tpz -d ~/.local/share/godot/templates
+            mv ~/.local/share/godot/templates/templates ~/.local/share/godot/templates/${GODOT_VERSION}.stable
+      - run:
+          name: Download ITCH.io butler
+          command: |
+            wget -q -O butler.zip https://broth.itch.ovh/butler/linux-amd64/LATEST/archive/default
+            unzip butler.zip
+            chmod +x butler
+      - run:
+          name: Export win64 client build
+          command: |
+            mkdir -p builds/win64
+            ../godot --export win64 project.godot "builds/win64/${GAME_NAME}.exe" || true
+      - run:
+          name: Upload win64 build
+          command: ./butler push TopDownShooterClient/builds/win64 ${ITCH_USERNAME}/${GAME_NAME}:win-64bit
+      - run:
+          name: Export win32 client build
+          command: |
+            mkdir -p builds/win32
+            ../godot --export win32 project.godot "builds/win32/${GAME_NAME}.exe" || true
+      - run:
+          name: Upload win32 build
+          command: ./butler push TopDownShooterClient/builds/win32 ${ITCH_USERNAME}/${GAME_NAME}:win-32bit
+      - run:
+          name: Export linux64 client build
+          command: |
+            mkdir -p builds/linux64
+            ../godot --export linux64 project.godot "builds/linux64/${GAME_NAME}.x86_64" || true
+      - run:
+          name: Upload linux64 build
+          command: ./butler push TopDownShooterClient/builds/linux64 ${ITCH_USERNAME}/${GAME_NAME}:linux-64bit
+      - run:
+          name: Export linux32 client build
+          command: |
+            mkdir -p builds/linux32
+            ../godot --export linux32 project.godot "builds/linux32/${GAME_NAME}.x86" || true
+      - run:
+          name: Upload linux32 build
+          command: ./butler push TopDownShooterClient/builds/linux32 ${ITCH_USERNAME}/${GAME_NAME}:linux-32bit
+      - run:
+          name: Export mac client build
+          command: |
+            mkdir -p builds/mac
+            ../godot --export mac project.godot "builds/mac/${GAME_NAME}.app" || true
+      - run:
+          name: Upload mac build
+          command: ./butler push TopDownShooterClient/builds/mac/${GAME_NAME}.app ${ITCH_USERNAME}/${GAME_NAME}:mac
+workflows:
+  build-all-workflow:
+    jobs:
+      - build-win-linux-mac
