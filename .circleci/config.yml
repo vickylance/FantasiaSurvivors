@@ -40,7 +40,7 @@ jobs:
           name: Export win64 client build
           command: |
             mkdir -p builds/win64
-            ./godot --export win64 project.godot "builds/win64/${GAME_NAME}.exe" || true
+            ./godot --export-release win64 project.godot "builds/win64/${GAME_NAME}.exe" || true
       - run:
           name: Upload win64 build
           command: ./butler push builds/win64 ${ITCH_USERNAME}/${GAME_NAME}:win-64bit
@@ -48,7 +48,7 @@ jobs:
           name: Export win32 client build
           command: |
             mkdir -p builds/win32
-            ./godot --export win32 project.godot "builds/win32/${GAME_NAME}.exe" || true
+            ./godot --export-release win32 project.godot "builds/win32/${GAME_NAME}.exe" || true
       - run:
           name: Upload win32 build
           command: ./butler push builds/win32 ${ITCH_USERNAME}/${GAME_NAME}:win-32bit
@@ -56,7 +56,7 @@ jobs:
           name: Export linux64 client build
           command: |
             mkdir -p builds/linux64
-            ./godot --export linux64 project.godot "builds/linux64/${GAME_NAME}.x86_64" || true
+            ./godot --export-release linux64 project.godot "builds/linux64/${GAME_NAME}.x86_64" || true
       - run:
           name: Upload linux64 build
           command: ./butler push builds/linux64 ${ITCH_USERNAME}/${GAME_NAME}:linux-64bit
@@ -64,7 +64,7 @@ jobs:
           name: Export linux32 client build
           command: |
             mkdir -p builds/linux32
-            ./godot --export linux32 project.godot "builds/linux32/${GAME_NAME}.x86" || true
+            ./godot --export-release linux32 project.godot "builds/linux32/${GAME_NAME}.x86" || true
       - run:
           name: Upload linux32 build
           command: ./butler push builds/linux32 ${ITCH_USERNAME}/${GAME_NAME}:linux-32bit
@@ -72,7 +72,7 @@ jobs:
           name: Export mac client build
           command: |
             mkdir -p builds/mac
-            ./godot --export mac project.godot "builds/mac/${GAME_NAME}.app" || true
+            ./godot --export-release mac project.godot "builds/mac/${GAME_NAME}.app" || true
       - run:
           name: Upload mac build
           command: ./butler push builds/mac/${GAME_NAME}.app ${ITCH_USERNAME}/${GAME_NAME}:mac
