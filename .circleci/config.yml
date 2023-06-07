@@ -79,4 +79,7 @@ jobs:
 workflows:
   build-all-workflow:
     jobs:
-      - build-win-linux-mac
+      - build-win-linux-mac:
+          context:
+            - docker
+            - itch
