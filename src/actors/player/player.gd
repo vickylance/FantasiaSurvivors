@@ -1,7 +1,7 @@
 extends CharacterBody2D
 class_name Player
 
-@export var move_speed := 150.0
+@export var move_speed: float = 150.0
 var last_movement := Vector2.UP
 
 @onready var sprite := %Sprite as Sprite2D
@@ -15,9 +15,12 @@ var last_movement := Vector2.UP
 @onready var experience := %Experience as Experience
 
 # Attacks
+@export_group("Attacks")
+@export var initial_attack: UpgradeItem
 @export var ice_spear: PackedScene
 @export var tornado: PackedScene
 @export var javelin: PackedScene
+@export_group("")
 
 # Attack nodes
 @onready var ice_spear_timer := %IceSpearTimer as Timer
@@ -39,32 +42,34 @@ var tornado_attack_speed: float = 3
 var tornado_level: int = 0
 
 # Javelin
-var javelin_ammo: int = 1
-var javelin_level: int = 1
+var javelin_ammo: int = 0
+var javelin_level: int = 0
 
 
 # Enemy related
-var enemies_close = []
+var enemies_close: Array[Enemy] = []
 @onready var enemy_detection_area := %EnemyDetectionArea as Area2D
 
 
 # Upgrades
 var collected_upgrades: Array[UpgradeItem] = []
 var upgrade_options: Array = []
-var armor = 0
-var speed = 0
-var spell_cooldown = 0
-var spell_size = 0
-var additional_attacks = 0
+var armor: int = 0
+var speed: float = 0
+var spell_cooldown: float = 0
+var spell_size: float = 0
+var additional_attacks: int = 0
 
 
 # GUI
+@export_group("GUI")
 @onready var exp_bar := %ExperienceBar as TextureProgressBar
 @onready var level_label := %LevelLabel as Label
 @onready var level_panel := %LevelUp as Panel
 @onready var item_option_list := %UpgradeOptions as VBoxContainer
 @onready var sound_level_up := %SoundLevelUp as AudioStreamPlayer
 @export var item_upgrade_option: PackedScene
+@export_group("")
 
 
 func _ready() -> void:
@@ -82,6 +87,8 @@ func _ready() -> void:
 	
 	assert(grab_area.area_entered.connect(_on_grab_area_entered) == OK)
 	assert(collect_area.area_entered.connect(_on_collect_area_entered) == OK)
+	
+	upgrade_character(initial_attack)
 	attack()
 	
 	assert(experience.level_up.connect(level_up) == OK)
@@ -96,8 +103,7 @@ func _physics_process(_delta: float) -> void:
 	pass
 
 
-func control() -> void:
-#	self.look_at(get_global_mouse_position())
+func control() -> void: # Player controls
 	var input_axis = Input.get_vector("move_left", "move_right", "move_up", "move_down").normalized()
 	
 	if input_axis:
@@ -110,7 +116,7 @@ func control() -> void:
 	pass
 
 
-func sprite_flip(deviation_factor = 0) -> void:
+func sprite_flip(deviation_factor = 0) -> void: # Flip Player sprite
 	if velocity.x > deviation_factor:
 		sprite.flip_h = true
 	elif velocity.x < deviation_factor:
@@ -118,7 +124,7 @@ func sprite_flip(deviation_factor = 0) -> void:
 	pass
 
 
-func sprite_animation() -> void:
+func sprite_animation() -> void: # Play player walk animation
 	if velocity != Vector2.ZERO and animation_timer.is_stopped():
 		if sprite.frame >= sprite.hframes - 1:
 			sprite.frame = 0
@@ -128,23 +134,23 @@ func sprite_animation() -> void:
 	pass
 
 
-func _on_hurt_box_hurt(damage: float, _angle: Vector2, _knock_back: float ) -> void:
-	health.take_damage(damage)
+func _on_hurt_box_hurt(damage: float, _angle: Vector2, _knock_back: float ) -> void: # Player took damage
+	health.take_damage(clamp(damage - armor, 1.0, 999.0))
 	pass
 
 
-func _on_health_dead() -> void:
+func _on_health_dead() -> void: # Player dead
 	queue_free()
 	pass
 
 
 func attack() -> void:
 	if ice_spear_level > 0:
-		ice_spear_timer.wait_time = ice_spear_attack_speed
+		ice_spear_timer.wait_time = ice_spear_attack_speed * (1 - spell_cooldown)
 		if ice_spear_timer.is_stopped():
 			ice_spear_timer.start()
 	if tornado_level > 0:
-		tornado_timer.wait_time = tornado_attack_speed
+		tornado_timer.wait_time = tornado_attack_speed * (1 - spell_cooldown)
 		if tornado_timer.is_stopped():
 			tornado_timer.start()
 	if javelin_level > 0:
@@ -160,6 +166,11 @@ func spawn_javelin() -> void:
 		javelin_spawn.global_position = global_position
 		javelin_base.add_child(javelin_spawn)
 		calc_spawns -= 1
+	# Upgrade Javelin
+	var get_javelins = javelin_base.get_children()
+	for i in get_javelins:
+		if i.has_method("update_javelin"):
+			i.update_javelin()
 	pass
 
 
@@ -205,68 +216,66 @@ func _on_tornado_attack_timer_timeout() -> void:
 	pass
 
 
-func get_random_target() -> Vector2:
+func get_random_target() -> Vector2: # Returns the position of a random enemy nearby
 	if enemies_close.size() > 0:
 		return enemies_close.pick_random().global_position
 	else:
 		return Vector2.UP
 
 
-func get_closest_target() -> Vector2:
+func get_closest_target() -> Vector2: # Returns the positon of the closest found enemy
 	if enemies_close.size() > 0:
 		return get_closest_enemy().global_position
 	else:
 		return Vector2.UP
 
 
-func get_closest_enemy():
-	var closest_enemy = null
-	var shortest_distance = INF
+func get_closest_enemy() -> Enemy: # Returns closest found Enemy
+	var closest_enemy: Enemy = null
+	var shortest_distance := INF
 	for enemy in enemies_close:
 		if not is_instance_valid(enemy):
 			continue
-		var distance = global_position.distance_to(enemy.global_position)
+		var distance := global_position.distance_to(enemy.global_position)
 		if distance < shortest_distance:
 			shortest_distance = distance
 			closest_enemy = enemy
 	return closest_enemy
 
 
-func _on_enemy_entered_detection(body: Node2D) -> void:
+func _on_enemy_entered_detection(body: Node2D) -> void: # Detect if enemies enter nearby
 	if not enemies_close.has(body) and body.is_in_group("enemy"):
 		enemies_close.append(body)
 	pass
 
 
-func _on_enemy_exited_detection(body: Node2D) -> void:
+func _on_enemy_exited_detection(body: Node2D) -> void: # Detect if nearby enemies leave
 	if enemies_close.has(body):
 		enemies_close.erase(body)
 	pass
 
 
-func _on_collect_area_entered(area: Area2D) -> void:
+func _on_grab_area_entered(area: Area2D) -> void: # Starts to grab the Item
 	if area.is_in_group("loot"):
-#		if area.is_class("ExperienceGem"):
+		area.target = self
+	pass
+
+
+func _on_collect_area_entered(area: Area2D) -> void: # Item Grab complete
+	if area.is_in_group("loot"):
 		var gem_exp = area.collect()
 		experience.calculate_experience(gem_exp)
 		set_exp_bar()
 	pass
 
 
-func _on_grab_area_entered(area: Area2D) -> void:
-	if area.is_in_group("loot"):
-#		if area.is_class("ExperienceGem"):
-		area.target = self
-	pass
-
-
-func set_exp_bar() -> void:
+func set_exp_bar() -> void: # Set Exp UI bar
 	exp_bar.value = experience.experience
 	exp_bar.max_value = experience.exp_required
 	pass
 
 
-func level_up() -> void:
+func level_up() -> void: # Called when your character levels up
 	sound_level_up.play()
 	level_label.text = "Level " + str(experience.level)
 	var tween = level_panel.create_tween()
@@ -278,7 +287,7 @@ func level_up() -> void:
 	var options_max = 3
 	while options < options_max:
 		var option_choice: ItemOption = item_upgrade_option.instantiate()
-		option_choice.item = get_random_item()
+		option_choice.item = get_random_upgrade_item()
 		item_option_list.add_child(option_choice)
 		options += 1
 	
@@ -286,7 +295,7 @@ func level_up() -> void:
 	pass
 
 
-func upgrade_character(upgrade: UpgradeItem) -> void:
+func upgrade_character(upgrade: UpgradeItem) -> void: # Called when you click on a Update item in level up panel
 	match upgrade.name:
 		"icespear1":
 			ice_spear_level = 1
@@ -301,7 +310,7 @@ func upgrade_character(upgrade: UpgradeItem) -> void:
 			ice_spear_base_ammo += 2
 		"icespear5":
 			ice_spear_level = 5
-			ice_spear_base_ammo += 2
+			ice_spear_base_ammo += 1
 		"tornado1":
 			tornado_level = 1
 			tornado_base_ammo += 1
@@ -328,6 +337,7 @@ func upgrade_character(upgrade: UpgradeItem) -> void:
 			javelin_level = 4
 		"javelin5":
 			javelin_level = 5
+			javelin_ammo += 1
 		"armor1","armor2","armor3","armor4","armor5":
 			armor += 1
 		"speed1","speed2","speed3","speed4","speed5":
@@ -340,6 +350,9 @@ func upgrade_character(upgrade: UpgradeItem) -> void:
 			additional_attacks += 1
 		"food":
 			health.heal(20)
+	
+	attack()
+	
 	level_panel_reset()
 	get_tree().paused = false
 	upgrade_options.clear()
@@ -348,7 +361,7 @@ func upgrade_character(upgrade: UpgradeItem) -> void:
 	pass
 
 
-func level_panel_reset() -> void:
+func level_panel_reset() -> void: # Reset the UI menu in the Level up panel
 	var option_children = item_option_list.get_children()
 	for i in option_children:
 		i.queue_free()
@@ -357,21 +370,22 @@ func level_panel_reset() -> void:
 	pass
 
 
-func get_random_item() -> UpgradeItem:
+func get_random_upgrade_item() -> UpgradeItem: # Return a random upgrade item from viable next upgrades possible
 	var db_list = []
 	for upgrade_item in UpgradeDb.upgrades:
-		if upgrade_item in collected_upgrades: # Find already collected upgrades
+		if upgrade_item in collected_upgrades: # If upgrade is already collected then skip
 			pass
-		elif upgrade_item in upgrade_options: # If the upgrade is already an option
+		elif upgrade_item in upgrade_options: # If upgrade is already a shown option then skip
 			pass
-		elif upgrade_item.type != "Weapon": # If the item is not a weapon then pass
+		elif upgrade_item.type != "Weapon": # If upgrade item is not a weapon then pass (Add more if need to allow more types)
 			pass
 		elif upgrade_item.prerequisite.size() > 0: # Check if there are any prerequisites
+			var to_add := true
 			for prerequisite_item in upgrade_item.prerequisite:
 				if not prerequisite_item in collected_upgrades:
-					pass
-				else:
-					db_list.append(upgrade_item)
+					to_add = false
+			if to_add == true:
+				db_list.append(upgrade_item)
 		else:
 			db_list.append(upgrade_item)
 	if db_list.size() > 0:
