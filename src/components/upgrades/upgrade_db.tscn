@@ -4,3 +4,4 @@
 
 [node name="UpgradeDB" type="Node"]
 script = ExtResource("1_bgkrm")
+upgrade_items_path = "/Users/vickylance/Projects/godot4/Fantasia Survivors/src/components/upgrades/items"

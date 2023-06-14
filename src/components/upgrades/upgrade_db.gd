@@ -1,11 +1,11 @@
 extends Node
 
 var upgrades: Array[UpgradeItem] = []
-@export var upgrade_items_path: String = "res://src/components/upgrades/items/"
+@export_global_dir var upgrade_items_path: String
 
 
 func _ready() -> void:
-	load_items(upgrade_items_path)
+	load_items(upgrade_items_path + "/")
 
 
 func load_items(path):
@@ -14,13 +14,13 @@ func load_items(path):
 		dir.list_dir_begin()
 		var file_name = dir.get_next()
 		while file_name != "":
+			if file_name.ends_with(".remap"):
+				file_name = file_name.replace(".remap", "")
 			if not dir.current_is_dir():
 				upgrades.append(load(path + file_name) as UpgradeItem)
 			elif dir.current_is_dir():
 				load_items(path + file_name + "/")
 			file_name = dir.get_next()
-#		for upgrade_item in upgrades:
-#			print(upgrade_item.name)
 	else:
 		print("An error occurred when trying to access the path.")
 	pass

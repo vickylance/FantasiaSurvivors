@@ -1,15 +1,19 @@
 extends Area2D
 
-var level: int = 1
-var hp: int = 9999
-var speed: float = 150.0
-var damage: float = 5
-var knock_back: int = 100
-var attack_size: float = 1.0
+# Base Stats
+@export_group("Base Stats")
+@export var level: int = 1
+@export var hp: int = 9999
+@export var speed: float = 150.0
+@export var damage: float = 5
+@export var knock_back: int = 100
+@export var attack_size: float = 1.0
+@export_group("")
 
 var last_movement := Vector2.ZERO
 var time: float = 0
 
+@export_group("Tornado Settings")
 @export_range(1, 1000) var frequency := 8.0
 @export_range(1, 1000) var amplitude := 100.0
 @export_range(1, 1000) var amplitude_scale := 2.0
@@ -17,6 +21,7 @@ var time: float = 0
 @export_range(1, 1000) var length_multiplier := 15.0
 @export var num_of_points := 1200
 @export var spawn_point := Vector2(50, 150)
+@export_group("")
 
 @onready var player: Player = get_tree().get_first_node_in_group("player")
 @onready var timer := $Timer as Timer
@@ -32,7 +37,31 @@ func _ready() -> void:
 			speed = 250.0
 			damage = 5
 			knock_back = 100
-			attack_size = 1.0
+			attack_size = 1.0 * (1 + player.spell_size)
+		2:
+			hp = 9999
+			speed = 250.0
+			damage = 5
+			knock_back = 100
+			attack_size = 1.0 * (1 + player.spell_size)
+		3:
+			hp = 9999
+			speed = 250.0
+			damage = 5
+			knock_back = 100
+			attack_size = 1.0 * (1 + player.spell_size)
+		4:
+			hp = 9999
+			speed = 250.0
+			damage = 5
+			knock_back = 125
+			attack_size = 1.0 * (1 + player.spell_size)
+		5:
+			hp = 9999
+			speed = 250.0
+			damage = 7
+			knock_back = 125
+			attack_size = 1.0 * (1 + player.spell_size)
 	
 	
 	get_parent().rotation = last_movement.angle() # set the rotation of the parent to the player direction

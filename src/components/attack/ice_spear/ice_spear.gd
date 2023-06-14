@@ -1,11 +1,15 @@
 extends Area2D
 
 var level = 1
-var hp = 1
-var speed = 150
-var damage = 5
-var knock_back = 100
-var attack_size = 1.0
+
+# Base Stats
+@export_group("Base Stats")
+@export var hp: int = 1
+@export var speed: float = 100
+@export var damage: int = 5
+@export var knock_back: float = 100
+@export var attack_size: float = 1.0
+@export_group("")
 
 var target := Vector2.ZERO
 var angle := Vector2.ZERO
@@ -22,11 +26,35 @@ func _ready() -> void:
 	rotation = angle.angle() + deg_to_rad(135)
 	match level:
 		1:
-			hp = 2
-			speed = 150
+			hp = 1
+			speed = 100
 			damage = 5
 			knock_back = 100
-			attack_size = 1.0
+			attack_size = 1.0 * (1 + player.spell_size)
+		2:
+			hp = 1
+			speed = 100
+			damage = 5
+			knock_back = 100
+			attack_size = 1.0 * (1 + player.spell_size)
+		3:
+			hp = 2
+			speed = 100
+			damage = 8
+			knock_back = 100
+			attack_size = 1.0 * (1 + player.spell_size)
+		4:
+			hp = 2
+			speed = 100
+			damage = 8
+			knock_back = 100
+			attack_size = 1.0 * (1 + player.spell_size)
+		5:
+			hp = 2
+			speed = 100
+			damage = 10
+			knock_back = 100
+			attack_size = 1.0 * (1 + player.spell_size)
 	
 	var tween = create_tween()
 	tween.tween_property(self, "scale", Vector2(1,1) * attack_size, 1).set_trans(Tween.TRANS_QUINT).set_ease(Tween.EASE_OUT)

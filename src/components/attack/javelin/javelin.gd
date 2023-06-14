@@ -1,20 +1,24 @@
 extends Area2D
 
 var level: int = 1
-var hp: int = 9999
-var speed: float = 200.0
-var damage: float = 10
-var knock_back: int = 100
-var attack_size: float = 1.0
+
+# Base Stats
+@export_group("Base Stats")
+@export var hp: int = 9999
+@export var speed: float = 200.0
+@export var damage: int = 10
+@export var knock_back: float = 100
+@export var attack_size: float = 1.0
+@export var attack_speed: float = 5.0
+@export_group("")
 
 var paths: int = 1
-var attack_speed: float = 5.0
 
-var target = Vector2.ZERO
+var target := Vector2.ZERO
 var target_array = []
 
-var angle = Vector2.ZERO
-var reset_pos = Vector2.ZERO
+var angle := Vector2.ZERO
+var reset_pos := Vector2.ZERO
 
 @onready var player: Player = get_tree().get_first_node_in_group("player")
 @onready var sprite_reg := %SpriteReg as Sprite2D
@@ -43,9 +47,41 @@ func update_javelin() -> void:
 			speed = 200.0
 			damage = 10
 			knock_back = 100
-			attack_size = 1.0
+			attack_size = 1.0 * (1 + player.spell_size)
+			paths = 1
+			attack_speed = 5.0 * (1 - player.spell_cooldown)
+		2:
+			hp = 9999
+			speed = 200.0
+			damage = 10
+			knock_back = 100
+			attack_size = 1.0 * (1 + player.spell_size)
+			paths = 2
+			attack_speed = 5.0 * (1 - player.spell_cooldown)
+		3:
+			hp = 9999
+			speed = 200.0
+			damage = 10
+			knock_back = 100
+			attack_size = 1.0 * (1 + player.spell_size)
 			paths = 3
-			attack_speed = 5.0
+			attack_speed = 5.0 * (1 - player.spell_cooldown)
+		4:
+			hp = 9999
+			speed = 200.0
+			damage = 15
+			knock_back = 125
+			attack_size = 1.0 * (1 + player.spell_size)
+			paths = 3
+			attack_speed = 5.0 * (1 - player.spell_cooldown)
+		5:
+			hp = 9999
+			speed = 200.0
+			damage = 20
+			knock_back = 125
+			attack_size = 1.0 * (1 + player.spell_size)
+			paths = 3
+			attack_speed = 5.0 * (1 - player.spell_cooldown)
 	
 	scale = Vector2(1, 1) * attack_size
 	attack_timer.wait_time = attack_speed
@@ -109,7 +145,7 @@ func add_paths() -> void:
 	attack_sound.play()
 	remove_from_array.emit(self)
 	target_array.clear()
-	var counter = 0
+	var counter := 0
 	while counter < paths:
 		var new_path = player.get_random_target()
 		target_array.append(new_path)
