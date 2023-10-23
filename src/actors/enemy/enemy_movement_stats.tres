@@ -1,0 +1,9 @@
+[gd_resource type="Resource" script_class="TopDownMovementStats" load_steps=2 format=3 uid="uid://d16po5fcok3e3"]
+
+[ext_resource type="Script" path="res://src/actors/player/top_down_movement_stats.gd" id="1_u1gcx"]
+
+[resource]
+script = ExtResource("1_u1gcx")
+max_speed = 60.0
+acceleration = 500.0
+friction = 250.0

@@ -1,8 +1,9 @@
 extends CharacterBody2D
 class_name Enemy
 
-@export var move_speed := 100.0
-@export var knock_back_recovery := 3.5
+@export var movement_stats: TopDownMovementStats
+
+@export var knock_back_recovery := 1200
 var knock_back = Vector2.ZERO
 @export var death_anim: PackedScene
 @export var experience := 1
@@ -26,19 +27,19 @@ func _ready() -> void:
 	pass
 
 
-func _physics_process(_delta: float) -> void:
+func _physics_process(delta: float) -> void:
 	if player == null: return
 	
-	movement()
+	movement(delta)
 	sprite_flip(0.1)
-	knock_back_effect()
+	knock_back_effect(delta)
 	move_and_slide()
 	pass
 
 
-func movement() -> void:
+func movement(delta: float) -> void:
 	var direction := global_position.direction_to(player.global_position)
-	velocity = direction * move_speed
+	velocity = velocity.move_toward(direction * movement_stats.max_speed, delta * movement_stats.acceleration)
 	pass
 
 
@@ -49,13 +50,14 @@ func sprite_flip(deviation_factor := 0.0) -> void:
 		sprite.flip_h = false
 	pass
 
-func knock_back_effect() -> void:
-	knock_back = knock_back.move_toward(Vector2.ZERO, knock_back_recovery)
+func knock_back_effect(delta: float) -> void:
+	knock_back = knock_back.move_toward(Vector2.ZERO, knock_back_recovery * delta)
 	velocity += knock_back
 	pass
 
 
 func _on_hurt_box_hurt(damage: float, angle: Vector2, knock_back_amount: float) -> void:
+	print(knock_back_amount)
 	knock_back = angle * knock_back_amount
 	health.take_damage(damage)
 	if health.current_hp > 0:

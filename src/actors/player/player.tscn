@@ -1,8 +1,9 @@
-[gd_scene load_steps=23 format=3 uid="uid://blbt8mhmyu5sj"]
+[gd_scene load_steps=24 format=3 uid="uid://blbt8mhmyu5sj"]
 
 [ext_resource type="Texture2D" uid="uid://de3746bnxlpmc" path="res://Textures/Player/player_sprite.png" id="1_ftv13"]
 [ext_resource type="Script" path="res://src/actors/player/player.gd" id="1_m5661"]
 [ext_resource type="PackedScene" uid="uid://bw80ifiy63jsn" path="res://src/components/attack/ice_spear/ice_spear.tscn" id="2_kgjgv"]
+[ext_resource type="Resource" uid="uid://di4lo8pgtn5jc" path="res://src/actors/player/player_movement_stats.tres" id="2_m7ep4"]
 [ext_resource type="Resource" uid="uid://dw5ewelb8knvr" path="res://src/components/upgrades/items/ice_spear_1.tres" id="2_ur76p"]
 [ext_resource type="PackedScene" uid="uid://bkr1af0pq75iq" path="res://src/components/health/health.tscn" id="3_2sqql"]
 [ext_resource type="PackedScene" uid="uid://bge8i8polnf4i" path="res://src/components/tornado/tornado.tscn" id="3_sjs75"]
@@ -36,7 +37,7 @@ radius = 50.0
 [node name="Player" type="CharacterBody2D" groups=["player"]]
 motion_mode = 1
 script = ExtResource("1_m5661")
-move_speed = 100.0
+movement_stats = ExtResource("2_m7ep4")
 initial_attack = ExtResource("2_ur76p")
 ice_spear = ExtResource("2_kgjgv")
 tornado = ExtResource("3_sjs75")

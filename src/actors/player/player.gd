@@ -1,7 +1,7 @@
 extends CharacterBody2D
 class_name Player
 
-@export var move_speed: float = 150.0
+@export var movement_stats: TopDownMovementStats
 var last_movement := Vector2.UP
 var time := 0
 
@@ -102,26 +102,24 @@ func _ready() -> void:
 	set_exp_bar()
 
 
-func _physics_process(_delta: float) -> void:
-	control()
+func _physics_process(delta: float) -> void:
+	control(delta)
 	sprite_flip()
 	sprite_animation()
 	move_and_slide()
 	pass
 
 
-func control() -> void: # Player controls
+func control(delta: float) -> void: # Player controls
 	var x_axis_input_val := Input.get_axis("move_left", "move_right")
 	var y_axis_input_val := Input.get_axis("move_up", "move_down")
 	var input_axis = Vector2(x_axis_input_val, y_axis_input_val).normalized()
 	
-	if input_axis:
+	if input_axis.length() > 0:
 		last_movement = input_axis
-		velocity = input_axis * move_speed
+		velocity = velocity.move_toward(input_axis * movement_stats.max_speed, movement_stats.acceleration * delta)
 	else: # deceleration
-		velocity = Vector2(
-			move_toward(velocity.x, 0, move_speed),
-			move_toward(velocity.y, 0, move_speed))
+		velocity = velocity.move_toward(Vector2.ZERO, movement_stats.friction * delta)
 	pass
 
 
@@ -356,7 +354,7 @@ func upgrade_character(upgrade: UpgradeItem) -> void: # Called when you click on
 		"armor1","armor2","armor3","armor4","armor5":
 			armor += 1
 		"speed1","speed2","speed3","speed4","speed5":
-			move_speed += 20.0
+			movement_stats.max_speed += 20.0
 		"tome1","tome2","tome3","tome4","tome5":
 			spell_size += 0.10
 		"scroll1","scroll2","scroll3","scroll4","scroll5":

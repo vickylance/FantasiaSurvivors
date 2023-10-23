@@ -1,7 +1,8 @@
-[gd_scene load_steps=15 format=3 uid="uid://p8cgk5qi7upk"]
+[gd_scene load_steps=16 format=3 uid="uid://p8cgk5qi7upk"]
 
 [ext_resource type="Script" path="res://src/actors/enemy/enemy.gd" id="1_ibg2p"]
 [ext_resource type="Texture2D" uid="uid://cu74qmvpfi0kc" path="res://Textures/Enemy/kolbold_weak.png" id="1_imuiw"]
+[ext_resource type="Resource" uid="uid://d16po5fcok3e3" path="res://src/actors/enemy/enemy_movement_stats.tres" id="2_tldni"]
 [ext_resource type="PackedScene" uid="uid://g3mesl4u8ecu" path="res://src/components/explosion/explosion.tscn" id="2_uippo"]
 [ext_resource type="PackedScene" uid="uid://bkr1af0pq75iq" path="res://src/components/health/health.tscn" id="3_tk88i"]
 [ext_resource type="PackedScene" uid="uid://b1bf4mpkaf3hj" path="res://src/components/collectibles/experience_gem/experience_gem.tscn" id="3_ykkbt"]
@@ -62,7 +63,7 @@ collision_layer = 5
 collision_mask = 5
 motion_mode = 1
 script = ExtResource("1_ibg2p")
-move_speed = 50.0
+movement_stats = ExtResource("2_tldni")
 death_anim = ExtResource("2_uippo")
 exp_gem = ExtResource("3_ykkbt")
 metadata/_edit_group_ = true
