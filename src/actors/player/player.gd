@@ -412,5 +412,5 @@ func change_timer(argtime: int = 0) -> void:
 	time = argtime
 	var get_minutes := "%02d" % (int(time / 60))
 	var get_seconds := "%02d" % (time % 60)
-	level_label.text = str(get_minutes + ":" + get_seconds)
+	timer_label.text = str(get_minutes + ":" + get_seconds)
 	pass
