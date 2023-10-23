@@ -1,0 +1,9 @@
+[gd_resource type="Resource" script_class="CreateResArgs" load_steps=2 format=3 uid="uid://b6wy2settird7"]
+
+[ext_resource type="Script" path="res://src/tools/create_res_json/create_res_args.gd" id="1_keplm"]
+
+[resource]
+script = ExtResource("1_keplm")
+resources_path = "/Users/vickylance/Projects/godot4/Fantasia Survivors/src/components/upgrades/items"
+export_json_path = "/Users/vickylance/Projects/godot4/Fantasia Survivors/src/components/upgrades/upgrades.json"
+build_json = false

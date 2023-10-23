@@ -1,0 +1,9 @@
+[gd_resource type="Resource" script_class="ExperienceGemRes" load_steps=3 format=3 uid="uid://botbocxffpn0b"]
+
+[ext_resource type="Script" path="res://src/components/collectibles/experience_gem/experience_gem_res.gd" id="1_c8kky"]
+[ext_resource type="Texture2D" uid="uid://uw8o2y10xav6" path="res://src/components/collectibles/experience_gem/green_gem.png" id="1_dkhpd"]
+
+[resource]
+script = ExtResource("1_c8kky")
+gem_sprite = ExtResource("1_dkhpd")
+gem_value = 5

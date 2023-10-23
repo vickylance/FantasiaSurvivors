@@ -1,6 +1,6 @@
 [gd_resource type="Resource" script_class="TopDownMovementStats" load_steps=2 format=3 uid="uid://di4lo8pgtn5jc"]
 
-[ext_resource type="Script" path="res://src/actors/player/top_down_movement_stats.gd" id="1_lc7qf"]
+[ext_resource type="Script" path="res://src/actors/top_down_movement_stats.gd" id="1_lc7qf"]
 
 [resource]
 script = ExtResource("1_lc7qf")

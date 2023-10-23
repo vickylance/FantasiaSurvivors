@@ -1,8 +1,8 @@
 [gd_scene load_steps=4 format=3 uid="uid://i21unejxpoo5"]
 
-[ext_resource type="Texture2D" uid="uid://rch3mp8m3kaa" path="res://Textures/Items/Weapons/sword.png" id="1_flo3g"]
+[ext_resource type="Texture2D" uid="uid://rch3mp8m3kaa" path="res://src/components/attack/sword/sword.png" id="1_flo3g"]
 [ext_resource type="Script" path="res://src/components/experience/gui/item_option.gd" id="1_uqdui"]
-[ext_resource type="FontFile" uid="uid://btbo567e07wpn" path="res://Font/tenderness.otf" id="2_8klko"]
+[ext_resource type="FontFile" uid="uid://btbo567e07wpn" path="res://fonts/tenderness.otf" id="2_8klko"]
 
 [node name="ItemOption" type="ColorRect"]
 custom_minimum_size = Vector2(180, 50)

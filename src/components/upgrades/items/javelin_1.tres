@@ -1,6 +1,6 @@
 [gd_resource type="Resource" script_class="UpgradeItem" load_steps=3 format=3 uid="uid://780udsjl5jca"]
 
-[ext_resource type="Texture2D" uid="uid://c6tbbpaqxsymo" path="res://Textures/Items/Weapons/javelin_3_new.png" id="1_3rrkq"]
+[ext_resource type="Texture2D" uid="uid://c6tbbpaqxsymo" path="res://src/components/attack/javelin/javelin_3_new.png" id="1_3rrkq"]
 [ext_resource type="Script" path="res://src/components/upgrades/upgrade_item.gd" id="2_rglfk"]
 
 [resource]

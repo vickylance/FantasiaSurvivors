@@ -1,6 +1,6 @@
 [gd_resource type="Resource" script_class="UpgradeItem" load_steps=4 format=3 uid="uid://h1amkd6nc2qi"]
 
-[ext_resource type="Texture2D" uid="uid://cerge3kx8gfwv" path="res://Textures/Items/Weapons/ice_spear.png" id="1_tyhsm"]
+[ext_resource type="Texture2D" uid="uid://cerge3kx8gfwv" path="res://src/components/attack/ice_spear/ice_spear.png" id="1_tyhsm"]
 [ext_resource type="Resource" uid="uid://k56uqheicbj6" path="res://src/components/upgrades/items/ice_spear_4.tres" id="2_xn7r4"]
 [ext_resource type="Script" path="res://src/components/upgrades/upgrade_item.gd" id="3_r4y1y"]
 

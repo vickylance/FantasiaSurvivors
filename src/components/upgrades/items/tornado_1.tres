@@ -1,6 +1,6 @@
 [gd_resource type="Resource" script_class="UpgradeItem" load_steps=3 format=3 uid="uid://bsx5irsy4hy1v"]
 
-[ext_resource type="Texture2D" uid="uid://cs7vpywh5fi4u" path="res://Textures/Items/Weapons/tornado.png" id="1_0effg"]
+[ext_resource type="Texture2D" uid="uid://cs7vpywh5fi4u" path="res://src/components/attack/tornado/tornado.png" id="1_0effg"]
 [ext_resource type="Script" path="res://src/components/upgrades/upgrade_item.gd" id="2_cqvgl"]
 
 [resource]

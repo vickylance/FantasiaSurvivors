@@ -1,26 +1,33 @@
-[gd_scene load_steps=5 format=3 uid="uid://b1bf4mpkaf3hj"]
+[gd_scene load_steps=8 format=3 uid="uid://b1bf4mpkaf3hj"]
 
 [ext_resource type="Script" path="res://src/components/collectibles/experience_gem/experience_gem.gd" id="1_y2wwr"]
-[ext_resource type="Texture2D" uid="uid://uw8o2y10xav6" path="res://Textures/Items/Gems/Gem_green.png" id="2_j4emm"]
-[ext_resource type="AudioStream" uid="uid://b2qxjrgswh0os" path="res://Audio/SoundEffect/collectgem.mp3" id="3_2thra"]
+[ext_resource type="Texture2D" uid="uid://uw8o2y10xav6" path="res://src/components/collectibles/experience_gem/green_gem.png" id="2_11r8m"]
+[ext_resource type="Resource" uid="uid://botbocxffpn0b" path="res://src/components/collectibles/experience_gem/gems/green_gem.tres" id="2_gn047"]
+[ext_resource type="Resource" uid="uid://oigusfbcuq0n" path="res://src/components/collectibles/experience_gem/gems/blue_gem.tres" id="3_ch2hq"]
+[ext_resource type="Resource" uid="uid://bjhelhjbwqpom" path="res://src/components/collectibles/experience_gem/gems/red_gem.tres" id="4_1c4ls"]
+[ext_resource type="AudioStream" uid="uid://b2qxjrgswh0os" path="res://src/components/collectibles/experience_gem/collectgem.mp3" id="6_aqlfl"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_80xw2"]
 size = Vector2(20, 22)
 
 [node name="ExperienceGem" type="Area2D" groups=["loot"]]
+position = Vector2(220, 93)
 scale = Vector2(0.5, 0.5)
 collision_layer = 8
 collision_mask = 0
 script = ExtResource("1_y2wwr")
+experience = 25
+gems = Array[Resource("res://src/components/collectibles/experience_gem/experience_gem_res.gd")]([ExtResource("2_gn047"), ExtResource("3_ch2hq"), ExtResource("4_1c4ls")])
+metadata/_edit_group_ = true
 
 [node name="Sprite" type="Sprite2D" parent="."]
-texture = ExtResource("2_j4emm")
+texture = ExtResource("2_11r8m")
 
 [node name="Shape" type="CollisionShape2D" parent="."]
 position = Vector2(0, -1)
 shape = SubResource("RectangleShape2D_80xw2")
 
 [node name="CollectedSound" type="AudioStreamPlayer" parent="."]
-stream = ExtResource("3_2thra")
+stream = ExtResource("6_aqlfl")
 volume_db = -10.0
 pitch_scale = 2.0

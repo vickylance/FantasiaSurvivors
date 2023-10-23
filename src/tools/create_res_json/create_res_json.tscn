@@ -1,8 +1,9 @@
-[gd_scene load_steps=2 format=3 uid="uid://xu6uah6raawf"]
+[gd_scene load_steps=4 format=3 uid="uid://xu6uah6raawf"]
 
 [ext_resource type="Script" path="res://src/tools/create_res_json/create_res_json.gd" id="1_ox0ny"]
+[ext_resource type="Resource" uid="uid://b6wy2settird7" path="res://src/tools/create_res_json/upgrades_res.tres" id="2_rd43x"]
+[ext_resource type="Resource" uid="uid://dfhpknxnpidgn" path="res://src/tools/create_res_json/coins_res.tres" id="3_3oqls"]
 
 [node name="CreateResourcesJson" type="Node"]
 script = ExtResource("1_ox0ny")
-resources_path = "/Users/vickylance/Projects/godot4/Fantasia Survivors/src/components/upgrades/items"
-export_json_path = "/Users/vickylance/Projects/godot4/Fantasia Survivors/src/components/upgrades/upgrades.json"
+create_res_args = Array[Resource("res://src/tools/create_res_json/create_res_args.gd")]([ExtResource("2_rd43x"), ExtResource("3_3oqls")])

@@ -1,6 +1,6 @@
 [gd_resource type="Resource" script_class="UpgradeItem" load_steps=3 format=3 uid="uid://6s6g1bgxq8au"]
 
-[ext_resource type="Texture2D" uid="uid://dah1sh8ttjyys" path="res://Textures/Items/Upgrades/urand_mage.png" id="1_3na67"]
+[ext_resource type="Texture2D" uid="uid://dah1sh8ttjyys" path="res://src/components/upgrades/sprites/urand_mage.png" id="1_3na67"]
 [ext_resource type="Script" path="res://src/components/upgrades/upgrade_item.gd" id="2_pbxk4"]
 
 [resource]

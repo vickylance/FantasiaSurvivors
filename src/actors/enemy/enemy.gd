@@ -57,7 +57,6 @@ func knock_back_effect(delta: float) -> void:
 
 
 func _on_hurt_box_hurt(damage: float, angle: Vector2, knock_back_amount: float) -> void:
-	print(knock_back_amount)
 	knock_back = angle * knock_back_amount
 	health.take_damage(damage)
 	if health.current_hp > 0:

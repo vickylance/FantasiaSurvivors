@@ -1,6 +1,6 @@
 [gd_resource type="Resource" script_class="UpgradeItem" load_steps=4 format=3 uid="uid://3p52o0ma5acq"]
 
-[ext_resource type="Texture2D" uid="uid://dbhcxryy5oep" path="res://Textures/Items/Upgrades/boots_4_green.png" id="1_5cpl6"]
+[ext_resource type="Texture2D" uid="uid://dbhcxryy5oep" path="res://src/components/upgrades/sprites/boots_4_green.png" id="1_5cpl6"]
 [ext_resource type="Resource" uid="uid://l37ppp8e3bnr" path="res://src/components/upgrades/items/speed_4.tres" id="2_aq4o0"]
 [ext_resource type="Script" path="res://src/components/upgrades/upgrade_item.gd" id="3_cepcu"]
 

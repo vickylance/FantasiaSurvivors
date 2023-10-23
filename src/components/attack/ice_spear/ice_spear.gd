@@ -72,7 +72,7 @@ func enemy_hit(charge = 1) -> void:
 		queue_free()
 		remove_from_array.emit(self)
 	pass
-
+	
 
 func _on_timeout_timer() -> void:
 	queue_free()

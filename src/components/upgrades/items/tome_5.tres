@@ -1,6 +1,6 @@
 [gd_resource type="Resource" script_class="UpgradeItem" load_steps=4 format=3 uid="uid://mfhytip8gp7e"]
 
-[ext_resource type="Texture2D" uid="uid://cewnts0epq7sy" path="res://Textures/Items/Upgrades/thick_new.png" id="1_ahuf0"]
+[ext_resource type="Texture2D" uid="uid://cewnts0epq7sy" path="res://src/components/upgrades/sprites/thick_new.png" id="1_ahuf0"]
 [ext_resource type="Resource" uid="uid://bynwrq0j4k317" path="res://src/components/upgrades/items/tome_4.tres" id="2_5mi3g"]
 [ext_resource type="Script" path="res://src/components/upgrades/upgrade_item.gd" id="3_w384h"]
 

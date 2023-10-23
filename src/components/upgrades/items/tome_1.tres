@@ -1,6 +1,6 @@
 [gd_resource type="Resource" script_class="UpgradeItem" load_steps=3 format=3 uid="uid://citxyhnqxarjj"]
 
-[ext_resource type="Texture2D" uid="uid://cewnts0epq7sy" path="res://Textures/Items/Upgrades/thick_new.png" id="1_ldaqe"]
+[ext_resource type="Texture2D" uid="uid://cewnts0epq7sy" path="res://src/components/upgrades/sprites/thick_new.png" id="1_ldaqe"]
 [ext_resource type="Script" path="res://src/components/upgrades/upgrade_item.gd" id="2_2vhlx"]
 
 [resource]
