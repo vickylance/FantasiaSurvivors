@@ -3,6 +3,7 @@ class_name Player
 
 @export var move_speed: float = 150.0
 var last_movement := Vector2.UP
+var time := 0
 
 @onready var sprite := %Sprite as Sprite2D
 @onready var animation_timer := %AnimationTimer as Timer
@@ -68,6 +69,8 @@ var additional_attacks: int = 0
 @onready var level_panel := %LevelUp as Panel
 @onready var item_option_list := %UpgradeOptions as VBoxContainer
 @onready var sound_level_up := %SoundLevelUp as AudioStreamPlayer
+@onready var health_bar := %HealthBar as TextureProgressBar
+@onready var timer_label := %TimerLabel as Label
 @export var item_upgrade_option: PackedScene
 @export_group("")
 
@@ -88,6 +91,10 @@ func _ready() -> void:
 	assert(grab_area.area_entered.connect(_on_grab_area_entered) == OK)
 	assert(collect_area.area_entered.connect(_on_collect_area_entered) == OK)
 	
+	assert(health.damaged.connect(_on_health_change) == OK)
+	assert(health.healed.connect(_on_health_change) == OK)
+	_on_health_change(health.current_hp)
+	
 	upgrade_character(initial_attack)
 	attack()
 	
@@ -104,7 +111,9 @@ func _physics_process(_delta: float) -> void:
 
 
 func control() -> void: # Player controls
-	var input_axis = Input.get_vector("move_left", "move_right", "move_up", "move_down").normalized()
+	var x_axis_input_val := Input.get_axis("move_left", "move_right")
+	var y_axis_input_val := Input.get_axis("move_up", "move_down")
+	var input_axis = Vector2(x_axis_input_val, y_axis_input_val).normalized()
 	
 	if input_axis:
 		last_movement = input_axis
@@ -141,6 +150,12 @@ func _on_hurt_box_hurt(damage: float, _angle: Vector2, _knock_back: float ) -> v
 
 func _on_health_dead() -> void: # Player dead
 	queue_free()
+	pass
+
+
+func _on_health_change(new_health: float) -> void:
+	health_bar.max_value = health.max_hp
+	health_bar.value = new_health
 	pass
 
 
@@ -393,3 +408,11 @@ func get_random_upgrade_item() -> UpgradeItem: # Return a random upgrade item fr
 		upgrade_options.append(random_item)
 		return random_item
 	return null
+
+
+func change_timer(argtime: int = 0) -> void:
+	time = argtime
+	var get_minutes := "%02d" % (int(time / 60))
+	var get_seconds := "%02d" % (time % 60)
+	level_label.text = str(get_minutes + ":" + get_seconds)
+	pass

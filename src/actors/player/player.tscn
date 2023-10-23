@@ -1,4 +1,4 @@
-[gd_scene load_steps=21 format=3 uid="uid://blbt8mhmyu5sj"]
+[gd_scene load_steps=23 format=3 uid="uid://blbt8mhmyu5sj"]
 
 [ext_resource type="Texture2D" uid="uid://de3746bnxlpmc" path="res://Textures/Player/player_sprite.png" id="1_ftv13"]
 [ext_resource type="Script" path="res://src/actors/player/player.gd" id="1_m5661"]
@@ -15,6 +15,8 @@
 [ext_resource type="Texture2D" uid="uid://b3i0181gr36qn" path="res://Textures/GUI/exp_progress.png" id="11_xwkv7"]
 [ext_resource type="FontFile" uid="uid://btbo567e07wpn" path="res://Font/tenderness.otf" id="12_2l2k2"]
 [ext_resource type="AudioStream" uid="uid://bw76fpiumcmca" path="res://Audio/SoundEffect/levelup.ogg" id="13_3840y"]
+[ext_resource type="Texture2D" uid="uid://dqw80gnircjbo" path="res://Textures/GUI/healthbar.png" id="16_31kdo"]
+[ext_resource type="Texture2D" uid="uid://ul4anlawqxxb" path="res://Textures/GUI/health.png" id="17_pokmr"]
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_vdo4k"]
 radius = 6.0
@@ -57,7 +59,7 @@ one_shot = true
 
 [node name="Health" parent="." instance=ExtResource("3_2sqql")]
 unique_name_in_owner = true
-max_hp = 10000.0
+max_hp = 150.0
 
 [node name="Experience" parent="." instance=ExtResource("8_lo83w")]
 unique_name_in_owner = true
@@ -155,6 +157,25 @@ theme_override_font_sizes/font_size = 16
 text = "Level 1"
 vertical_alignment = 2
 
+[node name="HealthBar" type="TextureProgressBar" parent="GUILayer/GUI"]
+unique_name_in_owner = true
+self_modulate = Color(1, 1, 1, 0.490196)
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -16.0
+offset_top = 20.0
+offset_right = 16.0
+offset_bottom = 28.0
+grow_horizontal = 2
+grow_vertical = 2
+value = 50.0
+texture_over = ExtResource("16_31kdo")
+texture_progress = ExtResource("17_pokmr")
+
 [node name="LevelUp" type="Panel" parent="GUILayer/GUI"]
 unique_name_in_owner = true
 process_mode = 2
@@ -202,5 +223,19 @@ layout_mode = 2
 unique_name_in_owner = true
 stream = ExtResource("13_3840y")
 volume_db = -10.0
+
+[node name="TimerLabel" type="Label" parent="GUILayer/GUI"]
+unique_name_in_owner = true
+layout_mode = 1
+anchors_preset = 10
+anchor_right = 1.0
+offset_top = 17.0
+offset_bottom = 41.0
+grow_horizontal = 2
+theme_override_fonts/font = ExtResource("12_2l2k2")
+theme_override_font_sizes/font_size = 20
+text = "00:00"
+horizontal_alignment = 1
+vertical_alignment = 1
 
 [editable path="HurtBox"]

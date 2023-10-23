@@ -6,10 +6,13 @@ class_name EnemySpawner
 @onready var player: Player = get_tree().get_first_node_in_group("player")
 @onready var timer := $Timer as Timer
 
-var time := 0.0
+var time := 0
+
+signal change_time(time_arg)
 
 
 func _ready() -> void:
+	assert(change_time.connect(player.change_timer) == OK)
 	assert(timer.timeout.connect(_on_timer_timeout) == OK)
 
 
@@ -31,6 +34,7 @@ func _on_timer_timeout() -> void:
 					enemy_spawn.global_position = get_random_position()
 					add_child(enemy_spawn)
 					counter += 1
+	change_time.emit(time)
 
 
 func get_random_position() -> Vector2:
