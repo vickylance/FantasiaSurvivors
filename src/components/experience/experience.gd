@@ -32,7 +32,7 @@ func calculate_experience_cap() -> int:
 	if level < 25:
 		exp_cap = level * 5
 	elif level < 40:
-		exp_cap + 95 * (level - 19) * 8
+		exp_cap = exp_cap + 95 * (level - 19) * 8
 	else:
 		exp_cap = 255 + (level - 39) * 12
 	return exp_cap
