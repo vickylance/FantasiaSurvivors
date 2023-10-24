@@ -90,6 +90,7 @@ jobs:
             mkdir -p builds/html
             ./godot --export-release web --headless project.godot "builds/html/${GAME_NAME}.zip" --verbose
             cd builds/html
+            zip ${GAME_NAME}.zip *
             ls -lash
       - run:
           name: Upload HTML5 Build
