@@ -39,55 +39,51 @@ jobs:
       - run:
           name: Open the project in Editor (Import all files)
           command: |
+            rm Godot_v${GODOT_VERSION}_export_templates.tpz
+            rm Godot_v${GODOT_VERSION}_linux.x86_64.zip
+            rm butler.zip
             ls -lash
             ./godot --editor --path . --no-window --headless --custom-arg-compile-import --verbose
       - run:
-          name: check folders
+          name: Export Windows 64-bit build
           command: |
-            cd ~/.local/share/godot/export_templates
-            ls -lash
-            cd 4.1.2.stable
-            ls -lash
+            mkdir -p builds/windows/x86_64
+            ./godot --export-release win64 --headless project.godot "builds/windows/x86_64/${GAME_NAME}.exe" --verbose
       - run:
-          name: Export win64 client build
+          name: Upload Windows 64-bit build
+          command: ./butler push builds/windows/x86_64 ${ITCH_USERNAME}/${GAME_NAME}:win-64bit
+      - run:
+          name: Export Windows 32-bit Build
           command: |
-            mkdir -p builds/win64
-            ./godot --export-release win64 --headless project.godot "builds/win64/${GAME_NAME}.exe"
+            mkdir -p builds/windows/x86_32
+            ./godot --export-release win32 --headless project.godot "builds/windows/x86_32/${GAME_NAME}.exe" --verbose
       - run:
-          name: Upload win64 build
-          command: ./butler push builds/win64 ${ITCH_USERNAME}/${GAME_NAME}:win-64bit
+          name: Upload Windows 32-bit Build
+          command: ./butler push builds/windows/x86_32 ${ITCH_USERNAME}/${GAME_NAME}:win-32bit
       - run:
-          name: Export win32 client build
+          name: Export Linux 64-bit Build
           command: |
-            mkdir -p builds/win32
-            ./godot --export-release win32 --headless project.godot "builds/win32/${GAME_NAME}.exe"
+            mkdir -p builds/linux/x86_64
+            ./godot --export-release linux64 --headless project.godot "builds/linux/x86_64/${GAME_NAME}.x86_64" --verbose
       - run:
-          name: Upload win32 build
-          command: ./butler push builds/win32 ${ITCH_USERNAME}/${GAME_NAME}:win-32bit
+          name: Upload Linux 64-bit Build
+          command: ./butler push builds/linux/x86_64 ${ITCH_USERNAME}/${GAME_NAME}:linux-64bit
       - run:
-          name: Export linux64 client build
+          name: Export Linux 32-bit Build
           command: |
-            mkdir -p builds/linux64
-            ./godot --export-release linux64 --headless project.godot "builds/linux64/${GAME_NAME}.x86_64"
+            mkdir -p builds/linux/x86_32
+            ./godot --export-release linux32 --headless project.godot "builds/linux/x86_32/${GAME_NAME}.x86_32" --verbose
       - run:
-          name: Upload linux64 build
-          command: ./butler push builds/linux64 ${ITCH_USERNAME}/${GAME_NAME}:linux-64bit
+          name: Upload Linux 32-bit Build
+          command: ./butler push builds/linux/x86_32 ${ITCH_USERNAME}/${GAME_NAME}:linux-32bit
       - run:
-          name: Export linux32 client build
+          name: Export MacOS Build
           command: |
-            mkdir -p builds/linux32
-            ./godot --export-release linux32 --headless project.godot "builds/linux32/${GAME_NAME}.x86_32"
+            mkdir -p builds/macos
+            ./godot --export-release mac --headless project.godot "builds/macos/${GAME_NAME}.dmg" --verbose
       - run:
-          name: Upload linux32 build
-          command: ./butler push builds/linux32 ${ITCH_USERNAME}/${GAME_NAME}:linux-32bit
-      - run:
-          name: Export mac client build
-          command: |
-            mkdir -p builds/mac
-            ./godot --export-release mac --headless project.godot "builds/mac/${GAME_NAME}.app"
-      - run:
-          name: Upload mac build
-          command: ./butler push builds/mac/${GAME_NAME}.app ${ITCH_USERNAME}/${GAME_NAME}:mac
+          name: Upload MacOS Build
+          command: ./butler push builds/macos/${GAME_NAME}.dmg ${ITCH_USERNAME}/${GAME_NAME}:mac
 workflows:
   build-all-workflow:
     jobs:
