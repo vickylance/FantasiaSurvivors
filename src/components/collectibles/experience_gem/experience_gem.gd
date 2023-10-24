@@ -13,7 +13,8 @@ var speed: float = -1
 
 
 func _ready() -> void:
-	assert(sound.finished.connect(_on_sound_play_finished) == OK)
+	var res := sound.finished.connect(_on_sound_play_finished) == OK
+	assert(res)
 	gems.sort_custom(func(a, b): return a.gem_value > b.gem_value)
 	
 	for n in range(gems.size()):

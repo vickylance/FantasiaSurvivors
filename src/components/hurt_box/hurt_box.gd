@@ -17,8 +17,10 @@ var hit_once_arrray  = []
 
 
 func _ready() -> void:
-	assert(self.area_entered.connect(_on_area_entered) == OK)
-	assert(disable_timer.timeout.connect(_on_disable_timer_timeout) == OK)
+	var res := self.area_entered.connect(_on_area_entered) == OK
+	assert(res)
+	var res1 := disable_timer.timeout.connect(_on_disable_timer_timeout) == OK
+	assert(res1)
 
 
 func _on_area_entered(area: Area2D) -> void:

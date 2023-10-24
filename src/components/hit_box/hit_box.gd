@@ -8,7 +8,8 @@ class_name HitBox
 
 
 func _ready() -> void:
-	assert(disable_timer.timeout.connect(_on_disable_timer_timeout) == OK)
+	var res := disable_timer.timeout.connect(_on_disable_timer_timeout) == OK
+	assert(res)
 	pass
 
 

@@ -30,7 +30,8 @@ var time: float = 0
 signal remove_from_array(object)
 
 func _ready() -> void:
-	assert(timer.timeout.connect(_on_timer_timeout) == OK)
+	var res := timer.timeout.connect(_on_timer_timeout) == OK
+	assert(res)
 	match level:
 		1:
 			hp = 9999

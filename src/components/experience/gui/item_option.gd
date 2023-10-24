@@ -12,8 +12,10 @@ var item: UpgradeItem = null
 signal selected_upgrade(upgrade)
 
 func _ready() -> void:
-	assert(selected_upgrade.connect(player.upgrade_character) == OK)
-	assert(button.pressed.connect(click) == OK)
+	var res := selected_upgrade.connect(player.upgrade_character) == OK
+	assert(res)
+	var res1 := button.pressed.connect(click) == OK
+	assert(res1)
 	
 	if item == null:
 		item = UpgradeDb.get_item("food")

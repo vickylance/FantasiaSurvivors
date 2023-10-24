@@ -15,13 +15,15 @@ var target := Vector2.ZERO
 var angle := Vector2.ZERO
 
 @onready var player: Player = get_tree().get_first_node_in_group("player")
-@onready var timeout_timer := $Timeout
+@onready var timeout_timer := $Timeout as Timer
 
 signal remove_from_array(object)
 
 func _ready() -> void:
-	assert(timeout_timer.timeout.connect(_on_timeout_timer) == OK)
-	assert(self.area_entered.connect(_on_area_entered) == OK)
+	var res := timeout_timer.timeout.connect(_on_timeout_timer) == OK
+	assert(res)
+	var res1 := self.area_entered.connect(_on_area_entered) == OK
+	assert(res1)
 	angle = global_position.direction_to(target)
 	rotation = angle.angle() + deg_to_rad(135)
 	match level:

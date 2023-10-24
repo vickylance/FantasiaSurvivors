@@ -76,29 +76,42 @@ var additional_attacks: int = 0
 
 
 func _ready() -> void:
-	assert(hurt_box.hurt.connect(_on_hurt_box_hurt) == OK)
-	assert(health.dead.connect(_on_health_dead) == OK)
+	var res := hurt_box.hurt.connect(_on_hurt_box_hurt) == OK
+	assert(res)
+	var res1 := health.dead.connect(_on_health_dead) == OK
+	assert(res1)
 	
-	assert(enemy_detection_area.body_entered.connect(_on_enemy_entered_detection) == OK)
-	assert(enemy_detection_area.body_exited.connect(_on_enemy_exited_detection) == OK)
+	var res2 := enemy_detection_area.body_entered.connect(_on_enemy_entered_detection) == OK
+	assert(res2)
+	var res3 := enemy_detection_area.body_exited.connect(_on_enemy_exited_detection) == OK
+	assert(res3)
 	
-	assert(ice_spear_timer.timeout.connect(_on_ice_spear_timer_timeout) == OK)
-	assert(ice_spear_attack_timer.timeout.connect(_on_ice_spear_attack_timer_timeout) == OK)
+	var res4 := ice_spear_timer.timeout.connect(_on_ice_spear_timer_timeout) == OK
+	assert(res4)
+	var res5 := ice_spear_attack_timer.timeout.connect(_on_ice_spear_attack_timer_timeout) == OK
+	assert(res5)
 	
-	assert(tornado_timer.timeout.connect(_on_tornado_timer_timeout) == OK)
-	assert(tornado_attack_timer.timeout.connect(_on_tornado_attack_timer_timeout) == OK)
+	var res6 := tornado_timer.timeout.connect(_on_tornado_timer_timeout) == OK
+	assert(res6)
+	var res7 := tornado_attack_timer.timeout.connect(_on_tornado_attack_timer_timeout) == OK
+	assert(res7)
 	
-	assert(grab_area.area_entered.connect(_on_grab_area_entered) == OK)
-	assert(collect_area.area_entered.connect(_on_collect_area_entered) == OK)
+	var res8 := grab_area.area_entered.connect(_on_grab_area_entered) == OK
+	assert(res8)
+	var res9 := collect_area.area_entered.connect(_on_collect_area_entered) == OK
+	assert(res9)
 	
-	assert(health.damaged.connect(_on_health_change) == OK)
-	assert(health.healed.connect(_on_health_change) == OK)
+	var res10 := health.damaged.connect(_on_health_change) == OK
+	assert(res10)
+	var res11 := health.healed.connect(_on_health_change) == OK
+	assert(res11)
 	_on_health_change(health.current_hp)
 	
 	upgrade_character(initial_attack)
 	attack()
 	
-	assert(experience.level_up.connect(level_up) == OK)
+	var res12 := experience.level_up.connect(level_up) == OK
+	assert(res12)
 	set_exp_bar()
 
 

@@ -34,8 +34,10 @@ signal remove_from_array(object)
 func _ready() -> void:
 	update_javelin()
 	_on_reset_pos_timer_timeout()
-	assert(attack_timer.timeout.connect(_on_attack_timer_timeout) == OK)
-	assert(change_dir_timer.timeout.connect(_on_change_dir_timer_timeout) == OK)
+	var res := attack_timer.timeout.connect(_on_attack_timer_timeout) == OK
+	assert(res)
+	var res1 := change_dir_timer.timeout.connect(_on_change_dir_timer_timeout) == OK
+	assert(res1)
 	pass
 
 

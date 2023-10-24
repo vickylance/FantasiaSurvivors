@@ -22,8 +22,10 @@ signal remove_from_array(object)
 
 
 func _ready() -> void:
-	assert(hurt_box.hurt.connect(_on_hurt_box_hurt) == OK)
-	assert(health.dead.connect(_on_health_dead) == OK)
+	var res := hurt_box.hurt.connect(_on_hurt_box_hurt) == OK
+	assert(res)
+	var res2 := health.dead.connect(_on_health_dead) == OK
+	assert(res2)
 	pass
 
 

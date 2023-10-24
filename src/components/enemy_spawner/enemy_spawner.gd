@@ -12,8 +12,10 @@ signal change_time(time_arg)
 
 
 func _ready() -> void:
-	assert(change_time.connect(player.change_timer) == OK)
-	assert(timer.timeout.connect(_on_timer_timeout) == OK)
+	var res := change_time.connect(player.change_timer) == OK
+	assert(res)
+	var res1 := timer.timeout.connect(_on_timer_timeout) == OK
+	assert(res1)
 
 
 func _on_timer_timeout() -> void:
