@@ -88,7 +88,7 @@ jobs:
           name: Export HTML5 Build
           command: |
             mkdir -p builds/html
-            ./godot --export-release html --headless project.godot "builds/html/${GAME_NAME}.zip" --verbose
+            ./godot --export-release web --headless project.godot "builds/html/${GAME_NAME}.zip" --verbose
       - run:
           name: Upload HTML5 Build
           command: ./butler push builds/html/${GAME_NAME}.zip ${ITCH_USERNAME}/${GAME_NAME}:html
