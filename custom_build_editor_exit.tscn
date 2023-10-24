@@ -1,0 +1,6 @@
+[gd_scene load_steps=2 format=3 uid="uid://bcyqvjy2ekbc0"]
+
+[ext_resource type="Script" path="res://custom_build_editor_exit.gd" id="1_717ku"]
+
+[node name="CustomBuildEditorExit" type="Node"]
+script = ExtResource("1_717ku")
