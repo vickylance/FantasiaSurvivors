@@ -2,7 +2,7 @@
 
 [ext_resource type="Script" path="res://src/components/attack/ice_spear/ice_spear.gd" id="1_xyjuv"]
 [ext_resource type="Texture2D" uid="uid://cerge3kx8gfwv" path="res://src/components/attack/ice_spear/ice_spear.png" id="2_4tl0y"]
-[ext_resource type="AudioStream" uid="uid://76x3yuy7cg2y" path="res://Audio/SoundEffect/ice.wav" id="3_l0obt"]
+[ext_resource type="AudioStream" uid="uid://76x3yuy7cg2y" path="res://src/components/attack/ice_spear/ice.wav" id="3_l0obt"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_4qx0q"]
 size = Vector2(7.07107, 32.5269)

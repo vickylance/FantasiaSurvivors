@@ -2,7 +2,7 @@
 
 [ext_resource type="Script" path="res://src/components/attack/tornado/tornado.gd" id="1_bx62l"]
 [ext_resource type="Texture2D" uid="uid://cs7vpywh5fi4u" path="res://src/components/attack/tornado/tornado.png" id="1_kdbvr"]
-[ext_resource type="AudioStream" uid="uid://dcj6ngvn7dd7u" path="res://Audio/SoundEffect/tornado.ogg" id="3_jiawd"]
+[ext_resource type="AudioStream" uid="uid://dcj6ngvn7dd7u" path="res://src/components/attack/tornado/tornado.ogg" id="3_jiawd"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_im0bj"]
 size = Vector2(17, 26)
