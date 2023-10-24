@@ -39,7 +39,8 @@ jobs:
       - run:
           name: Open the project in Editor (Import all files)
           command: |
-            ./godot --editor --path project.godot --no-window
+            ls -lash
+            ./godot --editor --path ./project.godot --no-window
       - run:
           name: Export win64 client build
           command: |
