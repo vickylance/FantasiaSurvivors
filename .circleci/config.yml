@@ -80,10 +80,18 @@ jobs:
           name: Export MacOS Build
           command: |
             mkdir -p builds/macos
-            ./godot --export-release mac --headless project.godot "builds/macos/${GAME_NAME}.dmg" --verbose
+            ./godot --export-release mac --headless project.godot "builds/macos/${GAME_NAME}.app" --verbose
       - run:
           name: Upload MacOS Build
-          command: ./butler push builds/macos/${GAME_NAME}.dmg ${ITCH_USERNAME}/${GAME_NAME}:mac
+          command: ./butler push builds/macos/${GAME_NAME}.app ${ITCH_USERNAME}/${GAME_NAME}:mac
+      - run:
+          name: Export HTML5 Build
+          command: |
+            mkdir -p builds/html
+            ./godot --export-release html --headless project.godot "builds/html/${GAME_NAME}.zip" --verbose
+      - run:
+          name: Upload HTML5 Build
+          command: ./butler push builds/html/${GAME_NAME}.zip ${ITCH_USERNAME}/${GAME_NAME}:html
 workflows:
   build-all-workflow:
     jobs:
