@@ -29,7 +29,7 @@ jobs:
             wget -q https://github.com/godotengine/godot/releases/download/${GODOT_VERSION}/Godot_v${GODOT_VERSION}_export_templates.tpz
             mkdir -p ~/.local/share/godot/export_templates
             unzip Godot_v${GODOT_VERSION}_export_templates.tpz -d ~/.local/share/godot/export_templates
-            mv ~/.local/share/godot/export_templates/templates ~/.local/share/godot/export_templates/${GODOT_VERSION}
+            mv ~/.local/share/godot/export_templates/templates ~/.local/share/godot/export_templates/4.1.2.stable
       - run:
           name: Download ITCH.io butler
           command: |
@@ -46,7 +46,7 @@ jobs:
           command: |
             cd ~/.local/share/godot/export_templates
             ls -lash
-            cd ${GODOT_VERSION}
+            cd 4.1.2.stable
             ls -lash
       - run:
           name: Export win64 client build
