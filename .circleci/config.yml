@@ -27,9 +27,9 @@ jobs:
           name: Download Godot 4 Export Templates
           command: |
             wget -q https://github.com/godotengine/godot/releases/download/${GODOT_VERSION}/Godot_v${GODOT_VERSION}_export_templates.tpz
-            mkdir -p ~/.local/share/godot/templates
-            unzip Godot_v${GODOT_VERSION}_export_templates.tpz -d ~/.local/share/godot/templates
-            mv ~/.local/share/godot/templates/templates ~/.local/share/godot/templates/${GODOT_VERSION}.stable
+            mkdir -p ~/.local/share/godot/export_templates
+            unzip Godot_v${GODOT_VERSION}_export_templates.tpz -d ~/.local/share/godot/export_templates
+            mv ~/.local/share/godot/export_templates/templates ~/.local/share/godot/export_templates/${GODOT_VERSION}.stable
       - run:
           name: Download ITCH.io butler
           command: |
@@ -37,10 +37,14 @@ jobs:
             unzip butler.zip
             chmod +x butler
       - run:
+          name: Open the project in Editor (Import all files)
+          command: |
+            ./godot --editor --path project.godot --no-window
+      - run:
           name: Export win64 client build
           command: |
             mkdir -p builds/win64
-            ./godot --export-release win64 --headless project.godot "builds/win64/${GAME_NAME}.exe" || true
+            ./godot --export-release win64 --headless project.godot "builds/win64/${GAME_NAME}.exe"
       - run:
           name: Upload win64 build
           command: ./butler push builds/win64 ${ITCH_USERNAME}/${GAME_NAME}:win-64bit
@@ -48,7 +52,7 @@ jobs:
           name: Export win32 client build
           command: |
             mkdir -p builds/win32
-            ./godot --export-release win32 --headless project.godot "builds/win32/${GAME_NAME}.exe" || true
+            ./godot --export-release win32 --headless project.godot "builds/win32/${GAME_NAME}.exe"
       - run:
           name: Upload win32 build
           command: ./butler push builds/win32 ${ITCH_USERNAME}/${GAME_NAME}:win-32bit
@@ -56,7 +60,7 @@ jobs:
           name: Export linux64 client build
           command: |
             mkdir -p builds/linux64
-            ./godot --export-release linux64 --headless project.godot "builds/linux64/${GAME_NAME}.x86_64" || true
+            ./godot --export-release linux64 --headless project.godot "builds/linux64/${GAME_NAME}.x86_64"
       - run:
           name: Upload linux64 build
           command: ./butler push builds/linux64 ${ITCH_USERNAME}/${GAME_NAME}:linux-64bit
@@ -64,7 +68,7 @@ jobs:
           name: Export linux32 client build
           command: |
             mkdir -p builds/linux32
-            ./godot --export-release linux32 --headless project.godot "builds/linux32/${GAME_NAME}.x86" || true
+            ./godot --export-release linux32 --headless project.godot "builds/linux32/${GAME_NAME}.x86_32"
       - run:
           name: Upload linux32 build
           command: ./butler push builds/linux32 ${ITCH_USERNAME}/${GAME_NAME}:linux-32bit
@@ -72,7 +76,7 @@ jobs:
           name: Export mac client build
           command: |
             mkdir -p builds/mac
-            ./godot --export-release mac --headless project.godot "builds/mac/${GAME_NAME}.app" || true
+            ./godot --export-release mac --headless project.godot "builds/mac/${GAME_NAME}.app"
       - run:
           name: Upload mac build
           command: ./butler push builds/mac/${GAME_NAME}.app ${ITCH_USERNAME}/${GAME_NAME}:mac
