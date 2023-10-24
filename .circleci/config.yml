@@ -40,7 +40,7 @@ jobs:
           name: Open the project in Editor (Import all files)
           command: |
             ls -lash
-            ./godot --editor --path . --no-window --headless --custom-arg-compile-import
+            ./godot --editor --path . --no-window --headless --custom-arg-compile-import --verbose
       - run:
           name: Export win64 client build
           command: |
