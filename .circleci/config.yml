@@ -44,7 +44,7 @@ jobs:
       - run:
           name: check folders
           command: |
-            cd .local/share/godot/export_templates
+            cd ~/.local/share/godot/export_templates
             ls -lash
             cd ${GODOT_VERSION}
             ls -lash
